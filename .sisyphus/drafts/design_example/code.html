@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#2b8cee",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101922",
+            },
+            fontFamily: {
+              "display": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<title>청원 답변하기 - 교직원 포털</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 md:px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-4 text-slate-900 dark:text-slate-100">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined text-xl">rate_review</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">청원 답변하기</h2>
+</div>
+<div class="flex flex-1 justify-end gap-4">
+<button class="flex items-center justify-center rounded-full h-10 w-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden border border-slate-300 dark:border-slate-600">
+<img class="w-full h-full object-cover" data-alt="Professional portrait of a staff member" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBe88iP3AvDcIhqlCF-wmJZtTPOGd0ol74JZt5we3FI67ObnzftTHeZ_ScFoZampEL6aQO_XgcTR67rernv75wapVrq8I2uyn6iT9YZLjsr-i1PvfuQGoTOYoB3VU15JQ-2CtrmxMuF1ArTeg7gCR59FjtYG59Bev7O1xGeCJsBEdH27e8TIswxRZh4rP0ofhCXURUkJ4avxU1FmyncAn9orWO8HBlBAsRPWjFk1LRdz5RYMe3-oy49VafAbHWCXs_2svOoXJxhK4c"/>
+</div>
+</div>
+</header>
+<main class="flex flex-1 justify-center py-8 px-4 md:px-0">
+<div class="layout-content-container flex flex-col max-w-[800px] flex-1 gap-6">
+<div class="flex flex-col gap-3">
+<details class="flex flex-col rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-5 py-3 group" open="">
+<summary class="flex cursor-pointer items-center justify-between gap-6 py-2 list-none">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">info</span>
+<p class="text-slate-900 dark:text-slate-100 font-semibold">청원 원문 상세 내용</p>
+</div>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="pt-4 border-t border-slate-200 dark:border-slate-700 mt-2 space-y-4">
+<div>
+<h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">제목</h4>
+<p class="text-slate-800 dark:text-slate-200 font-medium text-lg">Improving Campus Lighting &amp; Security in South Parking</p>
+</div>
+<div>
+<h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">상세 내용</h4>
+<p class="text-slate-700 dark:text-slate-300 leading-relaxed">
+                                        Students have reported significant concerns regarding safety near the south parking lot due to inadequate lighting at night. Several light posts have been flickering or are completely out for the past two weeks. This area is heavily used by students leaving late-night lab sessions. We request immediate replacement of bulbs and a review of the lighting density in that zone.
+                                    </p>
+</div>
+<div class="flex gap-6 py-2">
+<div>
+<h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">작성자</h4>
+<p class="text-sm text-slate-700 dark:text-slate-300">Alex Rivera (Student Council)</p>
+</div>
+<div>
+<h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">작성일</h4>
+<p class="text-sm text-slate-700 dark:text-slate-300">Oct 24, 2023</p>
+</div>
+<div>
+<h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">동의 수</h4>
+<p class="text-sm text-primary font-bold">142명 동의</p>
+</div>
+</div>
+</div>
+</details>
+</div>
+<div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary text-3xl">edit_note</span>
+<h2 class="text-xl font-bold">공식 답변 작성</h2>
+</div>
+<div class="space-y-6">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-slate-600 dark:text-slate-400">답변 상태</label>
+<div class="grid grid-cols-2 gap-4">
+<label class="relative flex items-center gap-3 p-4 border-2 border-slate-100 dark:border-slate-800 rounded-lg cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+<input checked="" class="w-4 h-4 text-primary border-slate-300 focus:ring-primary" name="status" type="radio"/>
+<div class="flex flex-col">
+<span class="font-bold text-sm">답변 완료로 표시</span>
+<span class="text-xs text-slate-500">답변을 제공하고 청원을 유지합니다</span>
+</div>
+</label>
+<label class="relative flex items-center gap-3 p-4 border-2 border-slate-100 dark:border-slate-800 rounded-lg cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+<input class="w-4 h-4 text-primary border-slate-300 focus:ring-primary" name="status" type="radio"/>
+<div class="flex flex-col">
+<span class="font-bold text-sm text-red-600 dark:text-red-400">청원 종료</span>
+<span class="text-xs text-slate-500">해결이 완료되어 청원을 종료합니다</span>
+</div>
+</label>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-slate-600 dark:text-slate-400">답변 내용</label>
+<div class="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden flex flex-col focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
+<div class="flex items-center gap-1 p-2 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[20px]">format_bold</span>
+</button>
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[20px]">format_italic</span>
+</button>
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[20px]">format_list_bulleted</span>
+</button>
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[20px]">format_list_numbered</span>
+</button>
+<div class="w-px h-6 bg-slate-300 dark:bg-slate-600 mx-1"></div>
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[20px]">link</span>
+</button>
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[20px]">image</span>
+</button>
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[20px]">table_chart</span>
+</button>
+<div class="ml-auto">
+<button class="text-xs font-bold text-primary px-2 py-1 hover:bg-primary/10 rounded">답변 미리보기</button>
+</div>
+</div>
+<textarea class="w-full min-h-[250px] p-4 text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-900 border-none focus:ring-0 resize-none text-base" placeholder="이곳에 공식 답변 내용을 작성해 주세요..."></textarea>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold text-slate-600 dark:text-slate-400">첨부 파일 (선택 사항)</label>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<div class="flex items-center gap-3 p-3 border border-dashed border-slate-300 dark:border-slate-600 rounded-lg bg-slate-50/50 dark:bg-slate-800/50">
+<div class="size-10 flex items-center justify-center bg-slate-200 dark:bg-slate-700 rounded text-slate-500">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-bold truncate">Security_Plan_2024.pdf</p>
+<p class="text-[10px] text-slate-500">2.4 MB • Uploaded</p>
+</div>
+<button class="text-slate-400 hover:text-red-500">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+<button class="flex flex-col items-center justify-center gap-1 p-3 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-lg hover:border-primary hover:bg-primary/5 transition-all text-slate-500 hover:text-primary">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="text-xs font-bold">문서 추가</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-10 flex items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-800">
+<button class="px-6 py-2.5 rounded-lg font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                                Save as Draft
+                            </button>
+<div class="flex gap-3">
+<button class="px-6 py-2.5 rounded-lg font-bold border border-slate-200 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 transition-colors">
+                                    Cancel
+                                </button>
+<button class="px-8 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-lg font-bold shadow-lg shadow-primary/20 transition-all">
+                                    Submit Response
+                                </button>
+</div>
+</div>
+</div>
+<div class="bg-primary/10 border border-primary/20 rounded-lg p-4 flex gap-4">
+<span class="material-symbols-outlined text-primary">visibility</span>
+<div class="flex-1">
+<p class="text-sm font-semibold text-primary">공개 범위 안내</p>
+<p class="text-xs text-primary/80">답변이 제출되면 모든 동의자와 공개 청원 페이지에서 내용을 확인할 수 있습니다.</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>
