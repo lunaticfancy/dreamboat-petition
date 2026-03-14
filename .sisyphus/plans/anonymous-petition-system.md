@@ -336,7 +336,7 @@ Wave FINAL (Verification — After ALL tasks):
 
 ---
 
-- [ ] 2. Database Schema Design
+- [x] 2. Database Schema Design
 
   **What to do**:
   - Prisma 스키마 설계
@@ -395,7 +395,7 @@ Wave FINAL (Verification — After ALL tasks):
 
 ---
 
-- [ ] 3. Type Definitions
+- [x] 3. Type Definitions
 
   **What to do**:
   - 공통 타입 정의 (src/types/index.ts)
