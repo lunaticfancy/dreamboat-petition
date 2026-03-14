@@ -874,7 +874,7 @@ Wave FINAL (Verification — After ALL tasks):
 
 ---
 
-- [ ] 11. Agreement System
+- [x] 11. Agreement System
 
   **What to do**:
   - 동의 버튼 컴포넌트
