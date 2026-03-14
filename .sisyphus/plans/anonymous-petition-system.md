@@ -3,8 +3,9 @@
 ## TL;DR
 
 > **Quick Summary**: 국회 청원 스타일의 익명 소통 시스템 구축. 학부모가 청원 작성 → 동의 수집 → 임계값 도달 시 관계자 답변. GitHub PR 스타일 상태 관리.
-> 
+>
 > **Deliverables**:
+>
 > - 학부모/관계자 인증 시스템
 > - 익명 청원 작성 및 동의 시스템
 > - 댓글/대댓글 토론 시스템
@@ -12,7 +13,7 @@
 > - 관리자 대시보드
 > - PWA 푸시 알림
 > - 반응형 웹 (모바일 우선)
-> 
+>
 > **Estimated Effort**: Large
 > **Parallel Execution**: YES -4 waves
 > **Critical Path**: Setup → Auth → Petition Core → Answer → Integration
@@ -22,30 +23,31 @@
 ## Context
 
 ### Original Request
+
 어린이집과 학부모 간 소통을 위한 익명의 창구 구축. 국회 청원 시스템처럼 찬성 동의를 모아 N명 이상 동의 시 어린이집 관계자가 대답해야 하는 시스템. 모바일 접근 가능, 게시판은 추천 순 정렬, GitHub PR 스타일로 답변 관리.
 
 ### Interview Summary
 
 **핵심 결정 사항**:
 
-| 항목 | 결정 |
-|------|------|
-| 서비스 범위 | 단일 어린이집 전용 |
-| 익명성 | 완전 익명 (작성자 식별 불가) |
-| 동의 임계값 | 최초 10명, 관리자 조정 가능 |
-| UI 스타일 | GitHub PR 스타일 |
-| 인증 | 이메일 회원가입 +인증 코드(학부모) / 관리자 생성(관계자) |
-| 투표 | 찬성만 |
-| 관계자 | 원장, 선생님 (답변 권한) |
-| 청원 작성 | 학부모만 작성 |
-| 의견 토론 | 동의 + 댓글 (모두 작성 가능) |
-| 데이터 보관 | 영구 보관 |
-| 수정/삭제 | 청원 수정 불가, 답변 수정 가능 (이력 표시) |
-| 신고 시스템 | 학부모 신고 → 관리자 검토 |
-| 파일 첨부 | 이미지/PDF, 10MB |
-| 알림 | PWA 푸시 알림 |
-| 호스팅 | Vercel + Supabase |
-| 테스트 | TDD |
+| 항목        | 결정                                                     |
+| ----------- | -------------------------------------------------------- |
+| 서비스 범위 | 단일 어린이집 전용                                       |
+| 익명성      | 완전 익명 (작성자 식별 불가)                             |
+| 동의 임계값 | 최초 10명, 관리자 조정 가능                              |
+| UI 스타일   | GitHub PR 스타일                                         |
+| 인증        | 이메일 회원가입 +인증 코드(학부모) / 관리자 생성(관계자) |
+| 투표        | 찬성만                                                   |
+| 관계자      | 원장, 선생님 (답변 권한)                                 |
+| 청원 작성   | 학부모만 작성                                            |
+| 의견 토론   | 동의 + 댓글 (모두 작성 가능)                             |
+| 데이터 보관 | 영구 보관                                                |
+| 수정/삭제   | 청원 수정 불가, 답변 수정 가능 (이력 표시)               |
+| 신고 시스템 | 학부모 신고 → 관리자 검토                                |
+| 파일 첨부   | 이미지/PDF, 10MB                                         |
+| 알림        | PWA 푸시 알림                                            |
+| 호스팅      | Vercel + Supabase                                        |
+| 테스트      | TDD                                                      |
 
 ### Metis Review
 
@@ -60,6 +62,7 @@
 7. **호스팅**: Vercel + Supabase
 
 **Guardrails Applied**:
+
 - 다중 어린이집 지원 없음 (단일 어련이집)
 - 실시간 채팅/DM 없음
 - 반대 투표 없음
@@ -71,6 +74,7 @@
 ## Work Objectives
 
 ### Core Objective
+
 국회 청원 스타일의 익명 소통 창구 구축. 학부모가 익명으로 청원 작성, 동의 수집, 임계값 도달 시 관계자 필수 답변. 모바일 반응형, PWA 푸시 알림.
 
 ### Concrete Deliverables
@@ -199,32 +203,32 @@ Wave FINAL (Verification — After ALL tasks):
 
 ### Dependency Matrix
 
-| Task | Depends On | Blocks |
-|------|------------|--------|
-| 1 | — | 2-6 |
-| 2 | 1 | 7-14 |
-| 3 | 1 | 7-14 |
-| 4 | 1, 3 | 7-8 |
-| 5 | 1 | 9-10, 19 |
-| 6 | 1 | 16 |
-| 7 | 2, 3, 4 | 9-14 |
-| 8 | 2, 3, 4 | 9-14 |
-| 9 | 2, 3, 5, 7 | 10-14 |
-| 10 | 9 | 11-14 |
-| 11 | 2, 3, 9 | 13 |
-| 12 | 2, 3, 9 | 13 |
-| 13 | 2, 3, 9, 11, 12 | 14 |
-| 14 | 13 | — |
-| 15 | 9 | — |
-| 16 | 6, 7 | — |
-| 17 | 2, 3, 9, 12 | — |
-| 18 | 2, 9 | — |
-| 19 | 5, 8 | — |
-| 20 | 2, 19 | — |
-| 21 | 7-14 | 22 |
-| 22 | 21 | — |
-| 23 | 22 | — |
-| 24 | 22 | — |
+| Task | Depends On      | Blocks   |
+| ---- | --------------- | -------- |
+| 1    | —               | 2-6      |
+| 2    | 1               | 7-14     |
+| 3    | 1               | 7-14     |
+| 4    | 1, 3            | 7-8      |
+| 5    | 1               | 9-10, 19 |
+| 6    | 1               | 16       |
+| 7    | 2, 3, 4         | 9-14     |
+| 8    | 2, 3, 4         | 9-14     |
+| 9    | 2, 3, 5, 7      | 10-14    |
+| 10   | 9               | 11-14    |
+| 11   | 2, 3, 9         | 13       |
+| 12   | 2, 3, 9         | 13       |
+| 13   | 2, 3, 9, 11, 12 | 14       |
+| 14   | 13              | —        |
+| 15   | 9               | —        |
+| 16   | 6, 7            | —        |
+| 17   | 2, 3, 9, 12     | —        |
+| 18   | 2, 9            | —        |
+| 19   | 5, 8            | —        |
+| 20   | 2, 19           | —        |
+| 21   | 7-14            | 22       |
+| 22   | 21              | —        |
+| 23   | 22              | —        |
+| 24   | 22              | —        |
 
 ### Agent Dispatch Summary
 
@@ -242,18 +246,19 @@ Wave FINAL (Verification — After ALL tasks):
 
 ### Design Files
 
-| File | Description | Tasks |
-|------|-------------|-------|
-| `code.html` | 청원 답변 페이지 (교직원 포털) | T13, T14 |
-| `admin_dashboard/screen.png` | 관리자 대시보드 | T19 |
-| `create_petition/screen.png` | 청원 작성 페이지 | T9 |
-| `petition_detail/screen.png` | 청원 상세 페이지 | T9, T11, T12, T13 |
-| `petition_list_home/screen.png` | 청원 목록/홈 페이지 | T5, T10 |
-| `screen.png` (루트) | 메인 화면 | T5 |
+| File                            | Description                    | Tasks             |
+| ------------------------------- | ------------------------------ | ----------------- |
+| `code.html`                     | 청원 답변 페이지 (교직원 포털) | T13, T14          |
+| `admin_dashboard/screen.png`    | 관리자 대시보드                | T19               |
+| `create_petition/screen.png`    | 청원 작성 페이지               | T9                |
+| `petition_detail/screen.png`    | 청원 상세 페이지               | T9, T11, T12, T13 |
+| `petition_list_home/screen.png` | 청원 목록/홈 페이지            | T5, T10           |
+| `screen.png` (루트)             | 메인 화면                      | T5                |
 
 ### Design Specifications (from code.html)
 
 **Color Scheme**:
+
 - Primary: `#2b8cee` (블루)
 - Background Light: `#f6f7f8`
 - Background Dark: `#101922`
@@ -261,15 +266,18 @@ Wave FINAL (Verification — After ALL tasks):
 - Border Dark: `#1e293b` (slate-800)
 
 **Typography**:
+
 - Font Family: Inter
 - Dark Mode Support: YES
 
 **Components**:
+
 - Rounded corners: `xl` (0.75rem)
 - Shadow: `shadow-sm`
 - Icons: Material Symbols Outlined
 
 **UI Patterns**:
+
 - Expandable details (details/summary)
 - Status badges (Open/Answered/Closed)
 - Rich text editor toolbar
@@ -320,6 +328,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun run build` 성공
 
   **QA Scenarios**:
+
   ```
   Scenario: Project runs successfully
     Tool: Bash
@@ -379,6 +388,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] Prisma Studio에서 테이블 확인
 
   **QA Scenarios**:
+
   ```
   Scenario: Schema generates valid migration
     Tool: Bash
@@ -429,6 +439,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] Prisma 타입과 일치
 
   **QA Scenarios**:
+
   ```
   Scenario: Types compile without errors
     Tool: Bash
@@ -480,6 +491,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] 세션 생성 확인
 
   **QA Scenarios**:
+
   ```
   Scenario: User can access login page
     Tool: Playwright
@@ -537,6 +549,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] Inter 폰트 적용
 
   **QA Scenarios**:
+
   ```
   Scenario: Layout matches design reference
     Tool: Playwright
@@ -589,6 +602,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] Lighthouse PWA 점수 > 80
 
   **QA Scenarios**:
+
   ```
   Scenario: PWA is installable
     Tool: Playwright
@@ -643,6 +657,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/auth.test.ts` 통과
 
   **QA Scenarios**:
+
   ```
   Scenario: Parent can signup and verify
     Tool: Playwright
@@ -699,6 +714,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/admin-users.test.ts` 통과
 
   **QA Scenarios**:
+
   ```
   Scenario: Admin can create teacher account
     Tool: Playwright
@@ -765,6 +781,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/petition-crud.test.ts` 통과
 
   **QA Scenarios**:
+
   ```
   Scenario: Petition creation matches design
     Tool: Playwright
@@ -779,25 +796,23 @@ Wave FINAL (Verification — After ALL tasks):
     Expected Result: UI matches design reference
     Evidence: .sisyphus/evidence/task-09-petition-create.png
   ```
+
   Scenario: Parent can create anonymous petition
-    Tool: Playwright
-    Steps:
-      1. Login as parent
-      2. Navigate to /petitions/new
-      3. Fill title: "급식 개선 요청", content: "내용..."
-      4. Submit form
-      5. View petition detail page
-    Expected Result: Petition created, anonymous author shown
-    Evidence: .sisyphus/evidence/task-09-petition-create.png
+  Tool: Playwright
+  Steps: 1. Login as parent 2. Navigate to /petitions/new 3. Fill title: "급식 개선 요청", content: "내용..." 4. Submit form 5. View petition detail page
+  Expected Result: Petition created, anonymous author shown
+  Evidence: .sisyphus/evidence/task-09-petition-create.png
+
   ```
 
   **Commit**: YES
   - Message: `feat: add petition create and read functionality`
   - Pre-commit: `bun test`
+  ```
 
 ---
 
-- [ ] 10. Petition CRUD - List/Search
+- [x] 10. Petition CRUD - List/Search
 
   **What to do**:
   - 청원 목록 페이지 (/petitions)
@@ -840,6 +855,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/petition-list.test.ts` 통과
 
   **QA Scenarios**:
+
   ```
   Scenario: Petition list matches design
     Tool: Playwright
@@ -896,6 +912,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/agreement.test.ts` 통과
 
   **QA Scenarios**:
+
   ```
   Scenario: User can agree once per petition
     Tool: Playwright
@@ -953,6 +970,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/comment.test.ts` 통과
 
   **QA Scenarios**:
+
   ```
   Scenario: User can add nested comments
     Tool: Playwright
@@ -1019,6 +1037,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/answer.test.ts` 통과
 
   **QA Scenarios**:
+
   ```
   Scenario: Answer page matches design reference
     Tool: Playwright
@@ -1073,6 +1092,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/answer-history.test.ts` 통과
 
   **QA Scenarios**:
+
   ```
   Scenario: Answer edit saves history
     Tool: Playwright
@@ -1131,6 +1151,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/file-upload.test.ts` 통과
 
   **QA Scenarios**:
+
   ```
   Scenario: Image upload with size limit
     Tool: Playwright
@@ -1187,6 +1208,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/push-notification.test.ts` 통과
 
   **QA Scenarios**:
+
   ```
   Scenario: Push notification on threshold reached
     Tool: Playwright
@@ -1242,6 +1264,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/report.test.ts` 통과
 
   **QA Scenarios**:
+
   ```
   Scenario: User can report inappropriate content
     Tool: Playwright
@@ -1299,6 +1322,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/petition-merge.test.ts` 통과
 
   **QA Scenarios**:
+
   ```
   Scenario: Admin can merge similar petitions
     Tool: Playwright
@@ -1358,6 +1382,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/admin-dashboard.test.ts` 통포
 
   **QA Scenarios**:
+
   ```
   Scenario: Admin dashboard matches design reference
     Tool: Playwright
@@ -1415,6 +1440,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] `bun test src/__tests__/threshold.test.ts` 통과
 
   **QA Scenarios**:
+
   ```
   Scenario: Threshold affects answer requirement
     Tool: Playwright
@@ -1470,6 +1496,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] DB 롤백 테스트 포함
 
   **QA Scenarios**:
+
   ```
   Scenario: Full petition lifecycle
     Tool: Vitest
@@ -1527,6 +1554,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] 크로스 브라우저 테스트 포함
 
   **QA Scenarios**:
+
   ```
   Scenario: E2E parent petition flow
     Tool: Playwright
@@ -1585,6 +1613,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] First Contentful Paint < 2s
 
   **QA Scenarios**:
+
   ```
   Scenario: Lighthouse performance score
     Tool: Playwright
@@ -1638,6 +1667,7 @@ Wave FINAL (Verification — After ALL tasks):
   - [ ] 색상 대비 4.5:1 이상
 
   **QA Scenarios**:
+
   ```
   Scenario: Keyboard-only navigation
     Tool: Playwright
@@ -1787,15 +1817,19 @@ Wave FINAL (Verification — After ALL tasks):
 ## Final Verification Wave
 
 ### F1. Plan Compliance Audit (oracle)
+
 Read plan end-to-end. Verify all Must Have implemented, all Must NOT Have absent. Check evidence files.
 
 ### F2. Code Quality Review (unspecified-high)
+
 Run `tsc --noEmit`, linter, tests. Check for AI slop patterns.
 
 ### F3. Manual QA (unspecified-high + playwright)
+
 Execute every QA scenario from every task. Cross-task integration testing.
 
 ### F4. Scope Fidelity Check (deep)
+
 Verify 1:1 implementation vs spec. Detect scope creep.
 
 ---
@@ -1809,6 +1843,7 @@ Commits grouped by wave. Each task has pre-commit test requirement.
 ## Success Criteria
 
 ### Verification Commands
+
 ```bash
 bun test                    # All tests pass
 bun run build              # Build succeeds
@@ -1817,6 +1852,7 @@ tsc --noEmit               # No type errors
 ```
 
 ### Final Checklist
+
 - [ ] All "Must Have" present
 - [ ] All "Must NOT Have" absent
 - [ ] All tests pass
