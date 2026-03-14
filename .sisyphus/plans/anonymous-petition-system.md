@@ -444,7 +444,7 @@ Wave FINAL (Verification — After ALL tasks):
 
 ---
 
-- [ ] 4. Authentication Setup (NextAuth.js)
+- [x] 4. Authentication Setup (NextAuth.js)
 
   **What to do**:
   - NextAuth.js 설치 및 설정
