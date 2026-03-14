@@ -496,7 +496,7 @@ Wave FINAL (Verification — After ALL tasks):
 
 ---
 
-- [ ] 5. Base UI Layout & Components
+- [x] 5. Base UI Layout & Components
 
   **What to do**:
   - 기본 레이아웃 (src/app/layout.tsx)
