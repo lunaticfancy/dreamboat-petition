@@ -662,7 +662,7 @@ Wave FINAL (Verification — After ALL tasks):
 
 ---
 
-- [ ] 8. User Management - Admin Account Creation
+- [x] 8. User Management - Admin Account Creation
 
   **What to do**:
   - 관리자 대시보드 사용자 관리 페이지 (/admin/users)
