@@ -931,7 +931,7 @@ Wave FINAL (Verification — After ALL tasks):
 
 ---
 
-- [ ] 12. Comment System
+- [x] 12. Comment System
 
   **What to do**:
   - 댓글 작성 컴포넌트
