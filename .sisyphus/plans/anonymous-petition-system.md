@@ -606,7 +606,7 @@ Wave FINAL (Verification — After ALL tasks):
 
 ---
 
-- [ ] 7. User Management - Parent Verification
+- [x] 7. User Management - Parent Verification
 
   **What to do**:
   - 학부모 회원가입 플로우 (이메일, 비밀번호)

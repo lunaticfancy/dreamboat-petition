@@ -1,14 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@prisma/client";
-import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { prisma } from "@/lib/db";
 import bcrypt from "bcryptjs";
-
-const adapter = new PrismaLibSql({
-  url: "file:prisma/dev.db",
-});
-
-const prisma = new PrismaClient({ adapter });
 
 export const authOptions: NextAuthOptions = {
   providers: [

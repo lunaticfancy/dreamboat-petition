@@ -2,10 +2,17 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated";
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -30,16 +37,29 @@ export function Navigation() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <Link href="/auth/login">
-            <Button variant="ghost" size="sm">
-              로그인
-            </Button>
-          </Link>
-          <Link href="/auth/signup">
-            <Button size="sm">
-              회원가입
-            </Button>
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <span className="text-sm text-muted-foreground">
+                {session?.user?.name || session?.user?.email}
+              </span>
+              <Button variant="ghost" size="sm" onClick={handleLogout}>
+                로그아웃
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link href="/auth/login">
+                <Button variant="ghost" size="sm">
+                  로그인
+                </Button>
+              </Link>
+              <Link href="/auth/signup">
+                <Button size="sm">
+                  회원가입
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         <button
@@ -80,16 +100,29 @@ export function Navigation() {
               청원 작성
             </Link>
             <div className="flex flex-col gap-2 pt-2 border-t border-border">
-              <Link href="/auth/login" onClick={() => setIsOpen(false)}>
-                <Button variant="ghost" className="w-full">
-                  로그인
-                </Button>
-              </Link>
-              <Link href="/auth/signup" onClick={() => setIsOpen(false)}>
-                <Button className="w-full">
-                  회원가입
-                </Button>
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <span className="text-sm text-muted-foreground py-2">
+                    {session?.user?.name || session?.user?.email}
+                  </span>
+                  <Button variant="ghost" className="w-full" onClick={handleLogout}>
+                    로그아웃
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link href="/auth/login" onClick={() => setIsOpen(false)}>
+                    <Button variant="ghost" className="w-full">
+                      로그인
+                    </Button>
+                  </Link>
+                  <Link href="/auth/signup" onClick={() => setIsOpen(false)}>
+                    <Button className="w-full">
+                      회원가입
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
         </div>

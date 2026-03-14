@@ -30,7 +30,7 @@ export default function SignupPage() {
         return;
       }
 
-      router.push("/auth/verify");
+      router.push(`/auth/verify?email=${encodeURIComponent(email)}`);
     } catch {
       setError("회원가입 중 오류가 발생했습니다.");
     } finally {
