@@ -555,7 +555,7 @@ Wave FINAL (Verification — After ALL tasks):
 
 ---
 
-- [ ] 6. PWA Setup (Service Worker)
+- [x] 6. PWA Setup (Service Worker)
 
   **What to do**:
   - next-pwa 패키지 설치
