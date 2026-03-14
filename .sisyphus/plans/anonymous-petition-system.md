@@ -718,7 +718,7 @@ Wave FINAL (Verification — After ALL tasks):
 
 ---
 
-- [ ] 9. Petition CRUD - Create/Read
+- [x] 9. Petition CRUD - Create/Read
 
   **What to do**:
   - 청원 작성 페이지 (/petitions/new)
