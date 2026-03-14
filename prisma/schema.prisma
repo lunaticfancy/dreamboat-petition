@@ -1,5 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Prisma Schema for Anonymous Petition System
+// Task 2: Database Schema Design
 
 generator client {
   provider = "prisma-client-js"
@@ -7,7 +7,237 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
 }
 
-// Placeholder - will be defined in Task 2
+// ============================================
+// USER MODEL
+// ============================================
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String    // Hashed password
+  name          String?
+  role          String    @default("PARENT") // PARENT, TEACHER, DIRECTOR, ADMIN
+  isVerified    Boolean   @default(false) // Email verified
+  verifiedAt    DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  // Note: Petition does NOT have userId to maintain anonymity
+  // The author is only known internally and not exposed
+  agreements         Agreement[]
+  comments           Comment[]
+  answers            Answer[]
+  reports            Report[]
+  verificationCodes VerificationCode[]
+  pushSubscriptions  PushSubscription[]
+  adminSettings      Setting[]
+
+  @@index([email])
+  @@index([role])
+}
+
+// ============================================
+// PETITION MODEL
+// ============================================
+model Petition {
+  id            String    @id @default(cuid())
+  title         String
+  content       String
+  status        String    @default("OPEN") // OPEN, ANSWERED, CLOSED
+  anonymousId   String    @unique @default(cuid()) // Anonymous identifier for public display
+  agreedCount   Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  answeredAt    DateTime?
+  closedAt      DateTime?
+
+  // Relations
+  agreements   Agreement[]
+  comments     Comment[]
+  answers      Answer[]
+  reports      Report[]
+  files        FileUpload[]
+
+  @@index([status])
+  @@index([agreedCount])
+  @@index([createdAt])
+}
+
+// ============================================
+// AGREEMENT MODEL (동의)
+// ============================================
+model Agreement {
+  id            String    @id @default(cuid())
+  userId        String
+  petitionId    String
+  anonymousKey  String    // Hash of user IP + device for anonymous tracking
+  createdAt     DateTime  @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  petition  Petition @relation(fields: [petitionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, petitionId]) // One agreement per user per petition
+  @@index([petitionId])
+  @@index([anonymousKey])
+}
+
+// ============================================
+// COMMENT MODEL
+// ============================================
+model Comment {
+  id            String    @id @default(cuid())
+  content       String
+  userId        String
+  petitionId    String
+  parentId      String?   // For nested comments (replies)
+  isStaff       Boolean   @default(false) // true if author is TEACHER/DIRECTOR
+  staffRole     String?   // TEACHER or DIRECTOR if isStaff is true
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  petition  Petition @relation(fields: [petitionId], references: [id], onDelete: Cascade)
+  parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentReplies")
+  reports   Report[]
+
+  @@index([petitionId])
+  @@index([parentId])
+  @@index([createdAt])
+}
+
+// ============================================
+// ANSWER MODEL (답변)
+// ============================================
+model Answer {
+  id            String    @id @default(cuid())
+  content       String
+  authorId      String
+  petitionId    String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  author    User              @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  petition  Petition          @relation(fields: [petitionId], references: [id], onDelete: Cascade)
+  editHistory AnswerEditHistory[]
+
+  @@index([petitionId])
+  @@index([authorId])
+}
+
+// ============================================
+// ANSWER EDIT HISTORY MODEL (답변 수정 이력)
+// ============================================
+model AnswerEditHistory {
+  id              String    @id @default(cuid())
+  answerId        String
+  previousContent String
+  editedAt        DateTime  @default(now())
+
+  // Relations
+  answer Answer @relation(fields: [answerId], references: [id], onDelete: Cascade)
+
+  @@index([answerId])
+  @@index([editedAt])
+}
+
+// ============================================
+// REPORT MODEL (신고)
+// ============================================
+model Report {
+  id            String    @id @default(cuid())
+  petitionId    String?
+  commentId     String?
+  reporterId    String
+  reason        String
+  status        String    @default("PENDING") // PENDING, REVIEWED, ACTIONED, DISMISSED
+  createdAt     DateTime  @default(now())
+  processedAt   DateTime?
+
+  // Relations
+  petition  Petition? @relation(fields: [petitionId], references: [id], onDelete: Cascade)
+  comment   Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  reporter  User      @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([reporterId])
+}
+
+// ============================================
+// VERIFICATION CODE MODEL (인증 코드)
+// ============================================
+model VerificationCode {
+  id            String    @id @default(cuid())
+  code          String
+  userId        String
+  expiresAt     DateTime
+  used          Boolean   @default(false)
+  usedAt        DateTime?
+  createdAt     DateTime  @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([code, userId])
+  @@index([expiresAt])
+}
+
+// ============================================
+// SETTING MODEL (설정)
+// ============================================
+model Setting {
+  id            String    @id @default(cuid())
+  key           String    @unique
+  value         String
+  description   String?
+  updatedById   String?
+  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime  @default(now())
+
+  // Relations
+  updatedBy User? @relation(fields: [updatedById], references: [id])
+
+  @@index([key])
+}
+
+// ============================================
+// FILE UPLOAD MODEL (파일 업로드)
+// ============================================
+model FileUpload {
+  id            String    @id @default(cuid())
+  url           String
+  fileName      String
+  fileType      String    // image/jpeg, application/pdf, etc.
+  fileSize      Int       // Size in bytes
+  petitionId    String
+  uploadedAt    DateTime  @default(now())
+
+  // Relations
+  petition Petition @relation(fields: [petitionId], references: [id], onDelete: Cascade)
+
+  @@index([petitionId])
+}
+
+// ============================================
+// PUSH SUBSCRIPTION MODEL (푸시 알림 구독)
+// ============================================
+model PushSubscription {
+  id            String    @id @default(cuid())
+  userId        String
+  endpoint      String
+  p256dh        String    // Public key
+  auth          String    // Auth secret
+  createdAt     DateTime  @default(now())
+  expiresAt     DateTime?
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([endpoint]) // Each endpoint is unique
+  @@index([userId])
+}

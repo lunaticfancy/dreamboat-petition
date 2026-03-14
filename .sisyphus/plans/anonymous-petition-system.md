@@ -280,7 +280,7 @@ Wave FINAL (Verification — After ALL tasks):
 
 ## TODOs
 
-- [ ] 1. Project Scaffolding
+- [x] 1. Project Scaffolding
 
   **What to do**:
   - Next.js 14 프로젝트 생성 (App Router)
