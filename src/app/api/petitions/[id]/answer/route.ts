@@ -5,7 +5,7 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaLibSql } from '@prisma/adapter-libsql';
 
 const adapter = new PrismaLibSql({
-  url: 'file:prisma/dev.db',
+  url: 'file:./dev.db',
 });
 
 const prisma = new PrismaClient({ adapter });
@@ -65,6 +65,11 @@ export async function POST(
         content,
         authorId: session.user.id,
         petitionId: params.id,
+      },
+      include: {
+        author: {
+          select: { name: true, role: true },
+        },
       },
     });
 

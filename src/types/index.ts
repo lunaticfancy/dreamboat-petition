@@ -8,7 +8,12 @@
 
 export type UserRole = 'PARENT' | 'TEACHER' | 'DIRECTOR' | 'ADMIN';
 
-export type PetitionStatus = 'OPEN' | 'ANSWERED' | 'CLOSED';
+export type PetitionStatus =
+  | 'OPEN'
+  | 'PENDING_ANSWER'
+  | 'ANSWERED'
+  | 'CLOSED'
+  | 'MERGED';
 
 export type ReportStatus = 'PENDING' | 'REVIEWED' | 'ACTIONED' | 'DISMISSED';
 
@@ -49,10 +54,12 @@ export interface Petition {
   status: PetitionStatus;
   anonymousId: string;
   agreedCount: number;
+  mergedToId?: string;
   createdAt: Date;
   updatedAt: Date;
   answeredAt?: Date;
   closedAt?: Date;
+  mergedAt?: Date;
 }
 
 export interface CreatePetitionInput {

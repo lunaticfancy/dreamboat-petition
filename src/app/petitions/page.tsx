@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import { StatusBadge } from '@/components/status-badge';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -14,6 +15,7 @@ interface Petition {
   status: string;
   anonymousId: string;
   agreedCount: number;
+  isHidden: boolean;
   createdAt: string;
   _count?: {
     agreements: number;
@@ -24,16 +26,20 @@ interface Petition {
 const statusTabs: { value: string; label: string }[] = [
   { value: '', label: '전체' },
   { value: 'OPEN', label: '진행 중' },
+  { value: 'PENDING_ANSWER', label: '답변 대기' },
   { value: 'ANSWERED', label: '답변 완료' },
-  { value: 'CLOSED', label: '종료' },
 ];
 
 export default function PetitionsListPage() {
+  const { data: session } = useSession();
   const [petitions, setPetitions] = useState<Petition[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [activeStatus, setActiveStatus] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+
+  const userRole = (session?.user as any)?.role;
+  const canSeeHidden = ['ADMIN', 'DIRECTOR', 'TEACHER'].includes(userRole);
 
   useEffect(() => {
     async function fetchPetitions() {
@@ -193,6 +199,16 @@ export default function PetitionsListPage() {
                         <StatusBadge
                           status={petition.status as PetitionStatus}
                         />
+                        {canSeeHidden && petition.isHidden && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-700">
+                            숨겨짐
+                          </span>
+                        )}
+                        {(petition as any)._count?.reports > 0 && (
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">
+                            🚨 신고 {(petition as any)._count.reports}
+                          </span>
+                        )}
                         <span className="text-xs text-muted-foreground">
                           {formatDate(petition.createdAt)}
                         </span>
