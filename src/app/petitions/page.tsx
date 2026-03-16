@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { StatusBadge } from '@/components/status-badge';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import type { PetitionStatus } from '@/types';
 
 interface Petition {
@@ -20,7 +21,16 @@ interface Petition {
   _count?: {
     agreements: number;
     comments: number;
+    reports: number;
   };
+}
+
+interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  hasMore: boolean;
 }
 
 const statusTabs: { value: string; label: string }[] = [
@@ -30,25 +40,44 @@ const statusTabs: { value: string; label: string }[] = [
   { value: 'ANSWERED', label: '답변 완료' },
 ];
 
+const ITEMS_PER_PAGE = 10;
+
 export default function PetitionsListPage() {
   const { data: session } = useSession();
   const [petitions, setPetitions] = useState<Petition[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState('');
   const [activeStatus, setActiveStatus] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [pagination, setPagination] = useState<Pagination>({
+    page: 1,
+    limit: ITEMS_PER_PAGE,
+    total: 0,
+    totalPages: 0,
+    hasMore: false,
+  });
 
   const userRole = (session?.user as any)?.role;
   const canSeeHidden = ['ADMIN', 'DIRECTOR', 'TEACHER'].includes(userRole);
 
-  useEffect(() => {
-    async function fetchPetitions() {
+  const fetchPetitions = useCallback(
+    async (page: number, append: boolean = false) => {
       try {
-        setLoading(true);
-        const url = activeStatus
-          ? `/api/petitions?status=${activeStatus}`
-          : '/api/petitions';
-        const res = await fetch(url);
+        if (append) {
+          setLoadingMore(true);
+        } else {
+          setLoading(true);
+        }
+
+        const params = new URLSearchParams();
+        params.set('page', page.toString());
+        params.set('limit', ITEMS_PER_PAGE.toString());
+        if (activeStatus) {
+          params.set('status', activeStatus);
+        }
+
+        const res = await fetch(`/api/petitions?${params.toString()}`);
         const data = await res.json();
 
         if (!res.ok) {
@@ -56,16 +85,31 @@ export default function PetitionsListPage() {
           return;
         }
 
-        setPetitions(data.petitions || []);
+        if (append) {
+          setPetitions((prev) => [...prev, ...(data.petitions || [])]);
+        } else {
+          setPetitions(data.petitions || []);
+        }
+        setPagination(data.pagination);
       } catch {
         setError('청원 목록 조회 중 오류가 발생했습니다.');
       } finally {
         setLoading(false);
+        setLoadingMore(false);
       }
-    }
+    },
+    [activeStatus]
+  );
 
-    fetchPetitions();
-  }, [activeStatus]);
+  useEffect(() => {
+    fetchPetitions(1, false);
+  }, [fetchPetitions]);
+
+  const handleLoadMore = () => {
+    if (pagination.hasMore && !loadingMore) {
+      fetchPetitions(pagination.page + 1, true);
+    }
+  };
 
   const filteredPetitions = useMemo(() => {
     if (!searchQuery.trim()) return petitions;
@@ -144,7 +188,12 @@ export default function PetitionsListPage() {
         </div>
 
         <div className="mb-4 text-sm text-muted-foreground">
-          총 {formatNumber(filteredPetitions.length)}개의 청원
+          총 {formatNumber(pagination.total)}개의 청원
+          {petitions.length > 0 && (
+            <span className="ml-2">
+              ({petitions.length}/{pagination.total}개 표시)
+            </span>
+          )}
         </div>
 
         {loading && (
@@ -250,6 +299,45 @@ export default function PetitionsListPage() {
                 </Card>
               </Link>
             ))}
+
+            {pagination.hasMore && (
+              <div className="flex justify-center pt-4">
+                <Button
+                  onClick={handleLoadMore}
+                  disabled={loadingMore}
+                  variant="outline"
+                  className="min-w-[200px]"
+                >
+                  {loadingMore ? (
+                    <span className="flex items-center gap-2">
+                      <svg
+                        className="animate-spin h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      로딩 중...
+                    </span>
+                  ) : (
+                    `더 보기 (${pagination.page}/${pagination.totalPages})`
+                  )}
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>

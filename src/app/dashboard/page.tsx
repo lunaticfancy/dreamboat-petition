@@ -611,35 +611,6 @@ export default function DashboardPage() {
                 </div>
               </Link>
 
-              <div className="pl-4 border-l-2 border-muted ml-5">
-                <Link
-                  href="/settings/notifications"
-                  className="flex items-center gap-3 p-3 rounded-lg border bg-card hover:bg-muted/50 transition-colors"
-                >
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-yellow-100">
-                    <svg
-                      className="w-4 h-4 text-yellow-600"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-                      <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="font-medium text-sm">알림 설정</p>
-                    <p className="text-xs text-muted-foreground">
-                      웹 알림 설정
-                    </p>
-                  </div>
-                </Link>
-              </div>
-
               <Link
                 href="/settings/notifications"
                 className="flex items-center gap-3 p-4 rounded-lg border bg-card hover:bg-muted/50 transition-colors"

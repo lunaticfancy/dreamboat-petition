@@ -71,6 +71,9 @@ export async function GET(req: Request) {
     const session = await getServerSession(authOptions);
     const { searchParams } = new URL(req.url);
     const status = searchParams.get('status');
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    const limit = parseInt(searchParams.get('limit') || '10', 10);
+    const skip = (page - 1) * limit;
 
     const userRole = (session?.user as any)?.role;
     const canSeeHidden = ['ADMIN', 'DIRECTOR', 'TEACHER'].includes(userRole);
@@ -85,17 +88,31 @@ export async function GET(req: Request) {
       where.isHidden = false;
     }
 
-    const petitions = await prisma.petition.findMany({
-      where,
-      orderBy: { agreedCount: 'desc' },
-      include: {
-        _count: {
-          select: { agreements: true, comments: true, reports: true },
+    const [petitions, total] = await Promise.all([
+      prisma.petition.findMany({
+        where,
+        orderBy: { agreedCount: 'desc' },
+        skip,
+        take: limit,
+        include: {
+          _count: {
+            select: { agreements: true, comments: true, reports: true },
+          },
         },
+      }),
+      prisma.petition.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      petitions,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+        hasMore: skip + petitions.length < total,
       },
     });
-
-    return NextResponse.json({ petitions });
   } catch (error) {
     console.error('Get petitions error:', error);
     return NextResponse.json(
