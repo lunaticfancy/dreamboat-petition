@@ -163,13 +163,15 @@ export function Navigation() {
             >
               📋 소통함 목록
             </Link>
-            <Link
-              href="/petitions/new"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
-              onClick={() => setIsOpen(false)}
-            >
-              ✏️ 소통함 작성
-            </Link>
+            {canCreatePetition && (
+              <Link
+                href="/petitions/new"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
+                onClick={() => setIsOpen(false)}
+              >
+                ✏️ 소통함 작성
+              </Link>
+            )}
             <div className="flex flex-col gap-2 pt-2 border-t border-border">
               {isAuthenticated ? (
                 <>
