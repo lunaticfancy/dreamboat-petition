@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { prisma } from '@/lib/db';
+import { prisma, PrismaClient } from '@/lib/db';
 
 export async function POST(req: Request) {
   try {
@@ -20,14 +20,14 @@ export async function POST(req: Request) {
     // Validation
     if (!sourceId || !targetId) {
       return NextResponse.json(
-        { error: '원본 청원 ID와 대상 청원 ID가 필요합니다.' },
+        { error: '원본 소통함 ID와 대상 소통함 ID가 필요합니다.' },
         { status: 400 }
       );
     }
 
     if (sourceId === targetId) {
       return NextResponse.json(
-        { error: '동일한 청원으로 병합할 수 없습니다.' },
+        { error: '동일한 소통함으로 병합할 수 없습니다.' },
         { status: 400 }
       );
     }
@@ -44,14 +44,14 @@ export async function POST(req: Request) {
 
     if (!sourcePetition) {
       return NextResponse.json(
-        { error: '원본 청원을 찾을 수 없습니다.' },
+        { error: '원본 소통함을 찾을 수 없습니다.' },
         { status: 404 }
       );
     }
 
     if (sourcePetition.status === 'MERGED') {
       return NextResponse.json(
-        { error: '이미 병합된 청원은 다시 병합할 수 없습니다.' },
+        { error: '이미 병합된 소통함은 다시 병합할 수 없습니다.' },
         { status: 400 }
       );
     }
@@ -63,20 +63,20 @@ export async function POST(req: Request) {
 
     if (!targetPetition) {
       return NextResponse.json(
-        { error: '대상 청원을 찾을 수 없습니다.' },
+        { error: '대상 소통함을 찾을 수 없습니다.' },
         { status: 404 }
       );
     }
 
     if (targetPetition.status === 'MERGED') {
       return NextResponse.json(
-        { error: '병합된 청원을 대상으로 선택할 수 없습니다.' },
+        { error: '병합된 소통함을 대상으로 선택할 수 없습니다.' },
         { status: 400 }
       );
     }
 
     // Perform merge in a transaction
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       // 1. Move all agreements from source to target (avoid duplicates)
       const sourceAgreements = await tx.agreement.findMany({
         where: { petitionId: sourceId },
@@ -88,7 +88,9 @@ export async function POST(req: Request) {
         where: { petitionId: targetId },
         select: { userId: true },
       });
-      const targetUserIds = new Set(targetAgreements.map((a) => a.userId));
+      const targetUserIds = new Set(
+        targetAgreements.map((a: { userId: string }) => a.userId)
+      );
 
       // Create agreements for users who haven't agreed to target yet
       for (const agreement of sourceAgreements) {
@@ -154,13 +156,13 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: '청원이 성공적으로 병합되었습니다.',
+      message: '소통함이 성공적으로 병합되었습니다.',
       mergedPetition: result,
     });
   } catch (error) {
     console.error('Merge petition error:', error);
     return NextResponse.json(
-      { error: '청원 병합 중 오류가 발생했습니다.' },
+      { error: '소통함 병합 중 오류가 발생했습니다.' },
       { status: 500 }
     );
   }
