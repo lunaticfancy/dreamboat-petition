@@ -162,7 +162,7 @@ export default function DashboardPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                진행 중
+                답변 대기
               </CardTitle>
               <svg
                 className="h-4 w-4 text-muted-foreground"
@@ -182,7 +182,9 @@ export default function DashboardPage() {
               <div className="text-2xl font-bold">
                 {formatNumber(adminStats?.pendingPetitions || 0)}
               </div>
-              <p className="text-xs text-muted-foreground">답변 대기 중</p>
+              <p className="text-xs text-muted-foreground">
+                답변 요청된 소통함
+              </p>
             </CardContent>
           </Card>
 

@@ -20,7 +20,7 @@ export async function GET(req: Request) {
     const totalPetitions = await prisma.petition.count();
 
     const pendingPetitions = await prisma.petition.count({
-      where: { status: 'OPEN' },
+      where: { status: 'PENDING_ANSWER' },
     });
 
     const answeredPetitions = await prisma.petition.count({
