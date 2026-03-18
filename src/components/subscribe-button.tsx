@@ -66,10 +66,21 @@ export function SubscribeButton({
         console.log('New subscription created');
       }
 
+      const subData = subscription.toJSON();
+      if (!subData.keys?.p256dh || !subData.keys?.auth) {
+        throw new Error('구독 키를 가져올 수 없습니다.');
+      }
+
+      const payload = {
+        endpoint: subData.endpoint,
+        p256dh: subData.keys.p256dh,
+        auth: subData.keys.auth,
+      };
+
       const response = await fetch('/api/notifications/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(subscription),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
