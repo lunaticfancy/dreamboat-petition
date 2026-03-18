@@ -13,6 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { SubscribeButton } from '@/components/subscribe-button';
 
 interface NotificationSettings {
   notifyNewPetition: boolean;
@@ -149,6 +150,26 @@ export default function NotificationSettingsPage() {
               {notificationPermission === 'granted' && (
                 <span className="text-green-600 text-sm">✓ 허용됨</span>
               )}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>푸시 알림 구독</CardTitle>
+            <CardDescription>
+              푸시 알림을 구독하면 브라우저에서 실시간 알림을 받을 수 있습니다.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium">알림 구독 상태</p>
+                <p className="text-sm text-muted-foreground">
+                  알림 받기 버튼을 클릭하여 구독하세요
+                </p>
+              </div>
+              <SubscribeButton />
             </div>
           </CardContent>
         </Card>
