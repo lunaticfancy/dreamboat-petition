@@ -37,6 +37,8 @@ export function createVerificationEmail(data: VerificationTemplateData): {
 
 본인이 요청하지 않으셨다면 이 이메일을 무시해주세요.
 
+좋은 의견, 칭찬, 바라는 점 함께 나눠주세요.
+
 감사합니다.
 ${senderName} 팀
   `.trim();
@@ -70,6 +72,10 @@ ${senderName} 팀
     
     <p style="color: #9ca3af; font-size: 12px; margin: 24px 0 0 0; text-align: center; border-top: 1px solid #e5e7eb; padding-top: 24px;">
       본인이 요청하지 않으셨다면 이 이메일을 무시해주세요.
+    </p>
+
+    <p style="color: #6b7280; font-size: 14px; margin: 24px 0 0 0; text-align: center;">
+      좋은 의견, 칭찬, 바라는 점 함께 나눠주세요.
     </p>
   </div>
   
