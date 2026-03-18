@@ -85,7 +85,18 @@ export async function POST(req: Request) {
       petitionTitle = comment?.petition.title || null;
     }
 
-    notifyNewReport(petitionTitle || '신고가 접수되었습니다', report.id);
+    try {
+      const result = await notifyNewReport(
+        petitionTitle || '신고가 접수되었습니다',
+        report.id
+      );
+      console.log('Report notification result:', result);
+      if (result.reason) {
+        console.warn('Report notification not sent:', result.reason);
+      }
+    } catch (error) {
+      console.error('Failed to send report notification:', error);
+    }
 
     return NextResponse.json({ report, message: '신고가 접수되었습니다.' });
   } catch (error) {

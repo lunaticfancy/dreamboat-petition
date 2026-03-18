@@ -118,7 +118,15 @@ export async function POST(
     ]);
 
     if (thresholdReached) {
-      notifyThresholdReached(petition.title, petitionId);
+      try {
+        const result = await notifyThresholdReached(petition.title, petitionId);
+        console.log('Threshold notification result:', result);
+        if (result.reason) {
+          console.warn('Threshold notification not sent:', result.reason);
+        }
+      } catch (error) {
+        console.error('Failed to send threshold notification:', error);
+      }
     }
 
     return NextResponse.json({

@@ -50,7 +50,15 @@ export async function POST(req: Request) {
       },
     });
 
-    notifyNewPetition(title, petition.id);
+    try {
+      const result = await notifyNewPetition(title, petition.id);
+      console.log('New petition notification result:', result);
+      if (result.reason) {
+        console.warn('Notification not sent:', result.reason);
+      }
+    } catch (error) {
+      console.error('Failed to send new petition notification:', error);
+    }
 
     return NextResponse.json({ petition });
   } catch (error) {

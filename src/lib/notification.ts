@@ -1,16 +1,54 @@
 import { prisma } from '@/lib/db';
 import webpush from 'web-push';
 
-// Configure VAPID keys for web-push
 const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_KEY;
 const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
 
-if (vapidPublicKey && vapidPrivateKey) {
-  webpush.setVapidDetails(
-    `mailto:${process.env.SENDGRID_FROM_EMAIL || 'noreply@puruni.com'}`,
-    vapidPublicKey,
-    vapidPrivateKey
-  );
+let vapidConfigured = false;
+
+function initVapid(): boolean {
+  if (vapidConfigured) {
+    return true;
+  }
+
+  if (!vapidPublicKey || !vapidPrivateKey) {
+    console.error(
+      'VAPID keys not configured. Set NEXT_PUBLIC_VAPID_KEY and VAPID_PRIVATE_KEY'
+    );
+    return false;
+  }
+
+  try {
+    webpush.setVapidDetails(
+      `mailto:${process.env.SENDGRID_FROM_EMAIL || 'noreply@puruni.com'}`,
+      vapidPublicKey,
+      vapidPrivateKey
+    );
+    vapidConfigured = true;
+    console.log('VAPID configured successfully');
+    return true;
+  } catch (error) {
+    console.error('Failed to configure VAPID:', error);
+    return false;
+  }
+}
+
+initVapid();
+
+export function isVapidConfigured(): boolean {
+  return vapidConfigured;
+}
+
+export function getNotificationStatus(): {
+  vapidConfigured: boolean;
+  vapidPublicKeySet: boolean;
+  vapidPrivateKeySet: boolean;
+} {
+  return {
+    vapidConfigured,
+    vapidPublicKeySet: !!vapidPublicKey,
+    vapidPrivateKeySet: !!vapidPrivateKey,
+  };
 }
 
 interface NotificationType {
@@ -26,7 +64,12 @@ export async function sendNotificationByType(
     body: string;
     tag?: string;
   }
-): Promise<{ sent: number; failed: number }> {
+): Promise<{ sent: number; failed: number; reason?: string }> {
+  if (!vapidConfigured) {
+    console.error('sendNotificationByType: VAPID not configured');
+    return { sent: 0, failed: 0, reason: 'VAPID_NOT_CONFIGURED' };
+  }
+
   let sent = 0;
   let failed = 0;
 
@@ -42,6 +85,17 @@ export async function sendNotificationByType(
         },
       },
     });
+
+    console.log(
+      `sendNotificationByType: Found ${subscriptions.length} total subscriptions`
+    );
+
+    if (subscriptions.length === 0) {
+      console.warn(
+        'sendNotificationByType: No push subscriptions found in database'
+      );
+      return { sent: 0, failed: 0, reason: 'NO_SUBSCRIPTIONS' };
+    }
 
     for (const sub of subscriptions) {
       const isEnabled =
@@ -71,16 +125,24 @@ export async function sendNotificationByType(
           })
         );
         sent++;
-      } catch (error) {
-        console.error('Failed to send push:', error);
+      } catch (error: any) {
+        console.error('Failed to send push notification:', {
+          endpoint: sub.endpoint.substring(0, 50) + '...',
+          error: error?.message || error,
+          statusCode: error?.statusCode,
+        });
         failed++;
       }
     }
+
+    console.log(
+      `sendNotificationByType: Result - sent: ${sent}, failed: ${failed}`
+    );
+    return { sent, failed };
   } catch (error) {
     console.error('Error in sendNotificationByType:', error);
+    return { sent: 0, failed: 0, reason: 'DATABASE_ERROR' };
   }
-
-  return { sent, failed };
 }
 
 export async function notifyNewPetition(

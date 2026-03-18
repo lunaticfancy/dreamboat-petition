@@ -1,7 +1,32 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { notifyNewPetition } from '@/lib/notification';
+import { notifyNewPetition, getNotificationStatus } from '@/lib/notification';
+import { prisma } from '@/lib/db';
+
+export async function GET() {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      return NextResponse.json({ error: '인증 필요' }, { status: 401 });
+    }
+
+    const status = getNotificationStatus();
+    const subscriberCount = await prisma.pushSubscription.count();
+
+    return NextResponse.json({
+      ...status,
+      subscriberCount,
+    });
+  } catch (error) {
+    console.error('Get notification status error:', error);
+    return NextResponse.json(
+      { error: '상태 조회 중 오류 발생' },
+      { status: 500 }
+    );
+  }
+}
 
 export async function POST(req: Request) {
   try {
@@ -19,6 +44,18 @@ export async function POST(req: Request) {
 
     const body = await req.json();
     const { testType } = body;
+
+    const status = getNotificationStatus();
+
+    if (!status.vapidConfigured) {
+      return NextResponse.json({
+        success: false,
+        error: 'VAPID_NOT_CONFIGURED',
+        message:
+          'VAPID keys not configured. Check NEXT_PUBLIC_VAPID_KEY and VAPID_PRIVATE_KEY environment variables.',
+        status,
+      });
+    }
 
     if (testType === 'petition') {
       const result = await notifyNewPetition(
