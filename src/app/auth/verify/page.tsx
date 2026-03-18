@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import { useState, useEffect, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 function VerifyContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const [sendingCode, setSendingCode] = useState(false);
 
   useEffect(() => {
-    const emailParam = searchParams.get("email");
+    const emailParam = searchParams.get('email');
     if (emailParam) {
       setEmail(emailParam);
     }
@@ -22,34 +22,34 @@ function VerifyContent() {
 
   const handleSendCode = async () => {
     if (!email) {
-      setError("이메일을 입력해주세요.");
+      setError('이메일을 입력해주세요.');
       return;
     }
 
-    setError("");
+    setError('');
     setSendingCode(true);
 
     try {
-      const res = await fetch("/api/auth/send-verification", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/auth/send-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "인증 코드 발송 중 오류가 발생했습니다.");
+        setError(data.error || '인증 코드 발송 중 오류가 발생했습니다.');
         return;
       }
 
-      setSuccess("인증 코드가 발송되었습니다. 이메일을 확인해주세요.");
-      
+      setSuccess('인증 코드가 발송되었습니다. 이메일을 확인해주세요.');
+
       if (data.code) {
         setSuccess(`인증 코드: ${data.code} (개발 모드에서만 표시)`);
       }
     } catch {
-      setError("인증 코드 발송 중 오류가 발생했습니다.");
+      setError('인증 코드 발송 중 오류가 발생했습니다.');
     } finally {
       setSendingCode(false);
     }
@@ -57,31 +57,32 @@ function VerifyContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setError('');
+    setSuccess('');
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/verify-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/auth/verify-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "인증 코드 확인 중 오류가 발생했습니다.");
+        setError(data.error || '인증 코드 확인 중 오류가 발생했습니다.');
+        setLoading(false);
         return;
       }
 
-      setSuccess("이메일 인증이 완료되었습니다. 로그인해주세요.");
+      setSuccess('이메일 인증이 완료되었습니다!');
+
       setTimeout(() => {
-        router.push("/auth/login");
-      }, 2000);
+        router.push('/auth/login');
+      }, 1500);
     } catch {
-      setError("인증 코드 확인 중 오류가 발생했습니다.");
-    } finally {
+      setError('인증 코드 확인 중 오류가 발생했습니다.');
       setLoading(false);
     }
   };
@@ -90,9 +91,7 @@ function VerifyContent() {
     <div className="min-h-screen flex items-center justify-center bg-background-light px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-slate-900">
-            이메일 인증
-          </h1>
+          <h1 className="text-2xl font-bold text-slate-900">이메일 인증</h1>
           <p className="text-slate-600 mt-2">
             회원가입 시 사용한 이메일로 인증 코드를 받으세요
           </p>
@@ -107,8 +106,13 @@ function VerifyContent() {
             )}
 
             {success && (
-              <div className="p-3 bg-green-50 20 border border-green-200 rounded-lg text-green-600 text-sm">
-                {success}
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
+                <div className="text-green-600 text-lg font-semibold mb-1">
+                  ✓ {success}
+                </div>
+                <div className="text-green-500 text-sm">
+                  잠시 후 로그인 페이지로 이동합니다...
+                </div>
               </div>
             )}
 
@@ -131,7 +135,7 @@ function VerifyContent() {
                   disabled={sendingCode || !email}
                   className="px-4 py-2 bg-slate-100 hover:bg-slate-200:bg-slate-600 text-slate-700 rounded-lg font-medium transition-colors disabled:opacity-50 whitespace-nowrap"
                 >
-                  {sendingCode ? "발송 중..." : "코드 받기"}
+                  {sendingCode ? '발송 중...' : '코드 받기'}
                 </button>
               </div>
             </div>
@@ -143,7 +147,9 @@ function VerifyContent() {
               <input
                 type="text"
                 value={code}
-                onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                onChange={(e) =>
+                  setCode(e.target.value.replace(/\D/g, '').slice(0, 6))
+                }
                 required
                 maxLength={6}
                 className="w-full px-4 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent text-center text-2xl tracking-widest"
@@ -156,13 +162,13 @@ function VerifyContent() {
               disabled={loading || !code || code.length !== 6}
               className="w-full py-3 px-4 bg-primary hover:bg-primary/90 text-white rounded-lg font-semibold transition-colors disabled:opacity-50"
             >
-              {loading ? "인증 중..." : "인증하기"}
+              {loading ? '인증 중...' : '인증하기'}
             </button>
           </form>
 
           <div className="mt-4 text-center">
             <p className="text-sm text-slate-600">
-              이미 인증하셨나요?{" "}
+              이미 인증하셨나요?{' '}
               <a
                 href="/auth/login"
                 className="text-primary hover:underline font-medium"
@@ -179,11 +185,13 @@ function VerifyContent() {
 
 export default function VerifyPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-background-light">
-        <div className="text-slate-600">로딩 중...</div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-background-light">
+          <div className="text-slate-600">로딩 중...</div>
+        </div>
+      }
+    >
       <VerifyContent />
     </Suspense>
   );
