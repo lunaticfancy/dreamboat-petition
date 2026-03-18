@@ -40,16 +40,31 @@ export function SubscribeButton({
       return;
     }
 
+    const vapidKey = process.env.NEXT_PUBLIC_VAPID_KEY;
+    if (!vapidKey) {
+      console.error('NEXT_PUBLIC_VAPID_KEY is not set');
+      alert('알림 설정이 완료되지 않았습니다. 관리자에게 문의하세요.');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
       const registration = await navigator.serviceWorker.ready;
-      const subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(
-          process.env.NEXT_PUBLIC_VAPID_KEY || ''
-        ) as unknown as BufferSource,
-      });
+      console.log('Service worker ready');
+
+      let subscription = await registration.pushManager.getSubscription();
+      console.log('Existing subscription:', subscription ? 'found' : 'none');
+
+      if (!subscription) {
+        subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(
+            vapidKey
+          ) as unknown as BufferSource,
+        });
+        console.log('New subscription created');
+      }
 
       const response = await fetch('/api/notifications/subscribe', {
         method: 'POST',
@@ -58,13 +73,18 @@ export function SubscribeButton({
       });
 
       if (!response.ok) {
-        throw new Error('구독 실패');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Subscribe API error:', response.status, errorData);
+        throw new Error(errorData.error || '구독 실패');
       }
 
       setIsSubscribed(true);
-    } catch (error) {
+      console.log('Subscription successful');
+    } catch (error: any) {
       console.error('구독 오류:', error);
-      alert('푸시 알림 구독에 실패했습니다.');
+      alert(
+        `푸시 알림 구독에 실패했습니다: ${error?.message || '알 수 없는 오류'}`
+      );
     } finally {
       setIsLoading(false);
     }

@@ -6,17 +6,14 @@ import { prisma } from '@/lib/db';
 
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session) {
-      return NextResponse.json({ error: '인증 필요' }, { status: 401 });
-    }
-
     const status = getNotificationStatus();
     const subscriberCount = await prisma.pushSubscription.count();
 
     return NextResponse.json({
       ...status,
+      vapidKeyPreview: process.env.NEXT_PUBLIC_VAPID_KEY
+        ? `${process.env.NEXT_PUBLIC_VAPID_KEY.substring(0, 20)}...`
+        : 'NOT_SET',
       subscriberCount,
     });
   } catch (error) {
