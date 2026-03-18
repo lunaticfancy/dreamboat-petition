@@ -17,9 +17,13 @@ export async function POST(req: Request) {
     const userId = (session.user as any).id;
     const userRole = (session.user as any).role;
 
-    if (userRole !== 'TEACHER' && userRole !== 'DIRECTOR') {
+    if (
+      userRole !== 'TEACHER' &&
+      userRole !== 'DIRECTOR' &&
+      userRole !== 'ADMIN'
+    ) {
       return NextResponse.json(
-        { error: '교직원만 알림을 구독할 수 있습니다.' },
+        { error: '교직원 또는 관리자만 알림을 구독할 수 있습니다.' },
         { status: 403 }
       );
     }

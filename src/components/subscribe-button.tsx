@@ -18,7 +18,8 @@ export function SubscribeButton({
   const [isLoading, setIsLoading] = useState(false);
 
   const userRole = (session?.user as any)?.role;
-  const canSubscribe = userRole === 'TEACHER' || userRole === 'DIRECTOR';
+  const canSubscribe =
+    userRole === 'TEACHER' || userRole === 'DIRECTOR' || userRole === 'ADMIN';
 
   useEffect(() => {
     if (
