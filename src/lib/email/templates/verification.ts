@@ -26,7 +26,7 @@ export function createVerificationEmail(data: VerificationTemplateData): {
   const senderName =
     process.env.SMTP_FROM_NAME ||
     process.env.SENDGRID_FROM_NAME ||
-    '드림보트 어린이집 운영위원회';
+    '드림보트 소통함 관리자 드림';
 
   const subject = `[드림보트 소통함] 이메일 인증코드`;
 
