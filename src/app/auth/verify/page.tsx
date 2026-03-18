@@ -12,6 +12,7 @@ function VerifyContent() {
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const [sendingCode, setSendingCode] = useState(false);
+  const [verified, setVerified] = useState(false);
 
   useEffect(() => {
     const emailParam = searchParams.get('email');
@@ -77,6 +78,7 @@ function VerifyContent() {
       }
 
       setSuccess('이메일 인증이 완료되었습니다!');
+      setVerified(true);
 
       setTimeout(() => {
         router.push('/auth/login');
@@ -110,9 +112,11 @@ function VerifyContent() {
                 <div className="text-green-600 text-lg font-semibold mb-1">
                   ✓ {success}
                 </div>
-                <div className="text-green-500 text-sm">
-                  잠시 후 로그인 페이지로 이동합니다...
-                </div>
+                {verified && (
+                  <div className="text-green-500 text-sm">
+                    잠시 후 로그인 페이지로 이동합니다...
+                  </div>
+                )}
               </div>
             )}
 
