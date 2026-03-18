@@ -150,7 +150,7 @@ export async function notifyNewPetition(
   petitionId: string
 ) {
   return sendNotificationByType('notifyNewPetition', {
-    title: '새로운 소통함이 등록되었습니다',
+    title: '소통함에 새로운 글이 등록되었습니다',
     body: petitionTitle,
     tag: `petition-${petitionId}`,
   });

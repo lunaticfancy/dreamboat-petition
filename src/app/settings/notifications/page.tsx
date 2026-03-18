@@ -186,7 +186,7 @@ export default function NotificationSettingsPage() {
                   새로운 소통함 알림
                 </Label>
                 <p className="text-sm text-muted-foreground">
-                  새로운 소통함이 등록되면 알림을 받습니다
+                  새로운 글이 등록되면 알림을 받습니다
                 </p>
               </div>
               <Checkbox
