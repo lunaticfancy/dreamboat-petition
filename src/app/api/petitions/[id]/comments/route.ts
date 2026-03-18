@@ -59,7 +59,7 @@ export async function GET(
       return '익명';
     };
 
-    const commentsWithStaff = comments.map((comment) => {
+    const commentsWithStaff = comments.map((comment: any) => {
       const isCommentStaff = staffRoles.includes(comment.user.role);
 
       return {
