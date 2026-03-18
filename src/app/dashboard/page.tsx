@@ -768,8 +768,8 @@ function ParentDashboard() {
               <div>
                 <p className="font-medium">답변 확인</p>
                 <p className="text-sm text-muted-foreground">
-                  관계자가 답변하면 알림을 받습니다. 답변을 확인하고 추가 의견을
-                  남길 수 있습니다.
+                  관계자가 답변하면 답변을 확인하고 추가 의견을 남기실 수
+                  있습니다.
                 </p>
               </div>
             </div>
