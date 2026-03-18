@@ -206,8 +206,8 @@ export default async function Home() {
             <div>
               <h3 className="font-bold text-primary mb-1">익명성 보장</h3>
               <p className="text-sm text-muted-foreground">
-                작성자 정보는 시스템 내부에서만 관리되며, 공개적으로는 익명으로
-                표시됩니다. 어린이집 관계자도 작성자를 확인할 수 없습니다.
+                작성자 정보는 시스템 내부에서도 알 수 없으며 익명으로 표시
+                됩니다.
               </p>
             </div>
           </div>
