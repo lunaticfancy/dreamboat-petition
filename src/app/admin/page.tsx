@@ -51,7 +51,7 @@ export default function AdminDashboardPage() {
       router.push('/auth/login');
     } else if (
       status === 'authenticated' &&
-      !['ADMIN', 'DIRECTOR'].includes((session?.user as any)?.role)
+      (session?.user as any)?.role !== 'ADMIN'
     ) {
       router.push('/');
     }
@@ -60,7 +60,7 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     if (
       status === 'authenticated' &&
-      ['ADMIN', 'DIRECTOR'].includes((session?.user as any)?.role)
+      (session?.user as any)?.role === 'ADMIN'
     ) {
       fetchDashboardData();
     }
@@ -105,10 +105,7 @@ export default function AdminDashboardPage() {
     );
   }
 
-  if (
-    status === 'authenticated' &&
-    !['ADMIN', 'DIRECTOR'].includes((session?.user as any)?.role)
-  ) {
+  if (status === 'authenticated' && (session?.user as any)?.role !== 'ADMIN') {
     return null;
   }
 

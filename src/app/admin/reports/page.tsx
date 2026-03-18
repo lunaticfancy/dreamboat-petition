@@ -192,26 +192,6 @@ export default function AdminReportsPage() {
   return (
     <div className="container mx-auto max-w-4xl p-6">
       <div className="mb-6">
-        <Link
-          href="/admin"
-          className="text-sm text-muted-foreground hover:text-foreground mb-2 inline-flex items-center gap-1"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="m12 19-7-7 7-7" />
-            <path d="M19 12H5" />
-          </svg>
-          대시보드로 돌아가기
-        </Link>
         <h1 className="text-2xl font-bold">신고 관리</h1>
         <p className="text-muted-foreground">
           사용자가 신고한 부적절한 콘텐츠를 검토하고 처리합니다.
