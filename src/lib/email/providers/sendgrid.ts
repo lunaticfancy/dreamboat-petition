@@ -33,14 +33,20 @@ export class SendGridProvider implements IEmailProvider {
     try {
       this.initialize();
 
-      const fromEmail =
-        process.env.SENDGRID_FROM_EMAIL ||
-        process.env.SMTP_FROM ||
-        'noreply@puruni.com';
-      const fromName =
-        process.env.SENDGRID_FROM_NAME ||
-        process.env.SMTP_FROM_NAME ||
-        '푸르니';
+      // Get from email - MUST be configured, no unsafe fallback
+      const fromEmail = process.env.SENDGRID_FROM_EMAIL;
+      if (!fromEmail) {
+        console.error('[SendGrid] FATAL: SENDGRID_FROM_EMAIL is not set!');
+        return {
+          success: false,
+          error: 'SENDGRID_FROM_EMAIL environment variable is not configured',
+        };
+      }
+
+      const fromName = process.env.SENDGRID_FROM_NAME || '푸르니';
+
+      // DEBUG: Log what we're actually using
+      console.log('[SendGrid] fromEmail resolved:', fromEmail);
 
       const emailData = {
         personalizations: [
