@@ -953,12 +953,6 @@ function StaffDashboard({ role }: { role: string }) {
             <p className="text-sm text-muted-foreground">
               • 답변은 수정할 수 있으며, 수정 이력이 저장됩니다.
             </p>
-            {role === 'DIRECTOR' && (
-              <p className="text-sm text-muted-foreground">
-                • 원장님은 관리자 페이지에서 사용자 관리 및 설정을 할 수
-                있습니다.
-              </p>
-            )}
           </div>
         </CardContent>
       </Card>
