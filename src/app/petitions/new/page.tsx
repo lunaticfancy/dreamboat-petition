@@ -54,13 +54,13 @@ export default function NewPetitionPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || '소통함 생성 중 오류가 발생했습니다.');
+        setError(data.error || '글 등록 중 오류가 발생했습니다.');
         return;
       }
 
       router.push(`/petitions/${data.petition.id}`);
     } catch {
-      setError('소통함 생성 중 오류가 발생했습니다.');
+      setError('글 등록 중 오류가 발생했습니다.');
     } finally {
       setLoading(false);
     }
@@ -78,7 +78,7 @@ export default function NewPetitionPage() {
     <div className="min-h-screen bg-background px-4 py-8">
       <div className="max-w-2xl mx-auto">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold">소통함 작성</h1>
+          <h1 className="text-3xl font-bold">글 작성</h1>
           <p className="text-muted-foreground mt-1">
             만들고 싶은 변화를 제시해보세요
           </p>
@@ -86,7 +86,7 @@ export default function NewPetitionPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>새 소통함</CardTitle>
+            <CardTitle>새 글 작성</CardTitle>
             <CardDescription>
               내용을 작성하시면 다른 학부모들도 볼 수 있습니다
             </CardDescription>
@@ -110,7 +110,7 @@ export default function NewPetitionPage() {
                   onChange={(e) => setTitle(e.target.value)}
                   required
                   maxLength={100}
-                  placeholder="소통함 제목을 입력하세요"
+                  placeholder="글 제목을 입력하세요"
                 />
               </div>
 
@@ -125,12 +125,12 @@ export default function NewPetitionPage() {
                   required
                   rows={10}
                   className="flex min-h-[160px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  placeholder="소통함 내용을 자세히 작성해주세요"
+                  placeholder="글 내용을 자세히 작성해주세요"
                 />
               </div>
 
               <Button type="submit" disabled={loading} className="w-full">
-                {loading ? '작성 중...' : '소통함 제출'}
+                {loading ? '작성 중...' : '글 제출'}
               </Button>
             </form>
           </CardContent>

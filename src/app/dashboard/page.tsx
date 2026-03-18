@@ -695,9 +695,9 @@ function ParentDashboard() {
                 </svg>
               </div>
               <div>
-                <p className="font-medium">새 소통함 작성</p>
+                <p className="font-medium">새 글 작성</p>
                 <p className="text-sm text-muted-foreground">
-                  익명으로 소통함을 작성합니다
+                  익명으로 글을 작성합니다
                 </p>
               </div>
             </Link>
@@ -743,9 +743,9 @@ function ParentDashboard() {
                 <span className="text-sm font-medium text-blue-600">1</span>
               </div>
               <div>
-                <p className="font-medium">소통함 작성</p>
+                <p className="font-medium">글 작성</p>
                 <p className="text-sm text-muted-foreground">
-                  익명으로 소통함을 작성합니다. 작성자 정보는 공개되지 않습니다.
+                  익명으로 글을 작성합니다. 작성자 정보는 공개되지 않습니다.
                 </p>
               </div>
             </div>

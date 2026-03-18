@@ -63,7 +63,7 @@ export function Navigation() {
               href="/petitions/new"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              ✏️ 소통함 작성
+              ✏️ 글 작성
             </Link>
           )}
         </nav>
@@ -169,7 +169,7 @@ export function Navigation() {
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
                 onClick={() => setIsOpen(false)}
               >
-                ✏️ 소통함 작성
+                ✏️ 글 작성
               </Link>
             )}
             <div className="flex flex-col gap-2 pt-2 border-t border-border">

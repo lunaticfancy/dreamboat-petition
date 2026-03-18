@@ -232,9 +232,7 @@ function PetitionsListPage() {
               </svg>
             </div>
             <p className="text-muted-foreground">
-              {searchQuery
-                ? '검색 결과가 없습니다.'
-                : '등록된 소통함이 없습니다.'}
+              {searchQuery ? '검색 결과가 없습니다.' : '등록된 글이 없습니다.'}
             </p>
           </div>
         )}
