@@ -24,7 +24,9 @@ export function createVerificationEmail(data: VerificationTemplateData): {
 } {
   const { code, expiryMinutes } = data;
   const senderName =
-    process.env.SMTP_FROM_NAME || process.env.SENDGRID_FROM_NAME || '푸르니';
+    process.env.SMTP_FROM_NAME ||
+    process.env.SENDGRID_FROM_NAME ||
+    '드림보트 어린이집';
 
   const subject = `[${senderName}] 이메일 인증 코드`;
 
