@@ -251,9 +251,7 @@ export default async function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/auth/signup">
-              <Button size="lg" variant="outline">
-                회원가입
-              </Button>
+              <Button size="lg">회원가입</Button>
             </Link>
             <Link href="/petitions">
               <Button size="lg" variant="outline">

@@ -93,7 +93,9 @@ export function Navigation() {
                 </Button>
               </Link>
               <Link href="/auth/signup">
-                <Button size="sm">👤 회원가입</Button>
+                <Button size="sm" variant="outline">
+                  👤 회원가입
+                </Button>
               </Link>
             </>
           )}
@@ -198,7 +200,9 @@ export function Navigation() {
                     </Button>
                   </Link>
                   <Link href="/auth/signup" onClick={() => setIsOpen(false)}>
-                    <Button className="w-full">👤 회원가입</Button>
+                    <Button variant="outline" className="w-full">
+                      👤 회원가입
+                    </Button>
                   </Link>
                 </>
               )}
