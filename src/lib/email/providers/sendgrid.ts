@@ -1,37 +1,31 @@
 // ============================================
-// SendGrid Email Provider
+// SendGrid Email Provider using native fetch
 // ============================================
 
-import sgMail from '@sendgrid/mail';
 import { IEmailProvider, EmailPayload, EmailResponse } from '../types';
 
 /**
- * SendGrid email provider
+ * SendGrid email provider using native fetch API
  * Requires SENDGRID_API_KEY environment variable
  */
 export class SendGridProvider implements IEmailProvider {
-  private initialized = false;
+  private apiKey: string | null = null;
 
   /**
-   * Initializes SendGrid client with API key
+   * Initializes SendGrid API key
    */
   private initialize(): void {
-    if (this.initialized) return;
+    if (this.apiKey) return;
 
-    const apiKey = process.env.SENDGRID_API_KEY;
-    console.log('[SendGrid] API Key length:', apiKey?.length);
-    console.log('[SendGrid] API Key first 10 chars:', apiKey?.substring(0, 10));
-
-    if (!apiKey) {
+    const key = process.env.SENDGRID_API_KEY;
+    if (!key) {
       throw new Error('SENDGRID_API_KEY is not configured');
     }
-
-    sgMail.setApiKey(apiKey);
-    this.initialized = true;
+    this.apiKey = key;
   }
 
   /**
-   * Sends an email via SendGrid API
+   * Sends an email via SendGrid API using native fetch
    * @param payload - Email payload
    * @returns Response indicating success/failure
    */
@@ -39,7 +33,6 @@ export class SendGridProvider implements IEmailProvider {
     try {
       this.initialize();
 
-      const apiKey = process.env.SENDGRID_API_KEY;
       const fromEmail =
         process.env.SENDGRID_FROM_EMAIL ||
         process.env.SMTP_FROM ||
@@ -49,41 +42,56 @@ export class SendGridProvider implements IEmailProvider {
         process.env.SMTP_FROM_NAME ||
         '푸르니';
 
-      console.log('[SendGrid] Sending email:', {
-        to: payload.to,
-        from: fromEmail,
-        subject: payload.subject,
-        hasApiKey: !!apiKey,
-      });
-
-      const [response] = await sgMail.send({
-        to: payload.to,
+      const emailData = {
+        personalizations: [
+          {
+            to: [{ email: payload.to }],
+          },
+        ],
         from: {
           email: fromEmail,
           name: fromName,
         },
         subject: payload.subject,
-        text: payload.text || '',
-        html: payload.html || '',
+        content: [
+          {
+            type: 'text/plain',
+            value: payload.text || '',
+          },
+          {
+            type: 'text/html',
+            value: payload.html || payload.text || '',
+          },
+        ],
+      };
+
+      const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(emailData),
       });
 
-      const rawMessageId = response.headers['x-message-id'];
-      const messageId = Array.isArray(rawMessageId)
-        ? rawMessageId[0]
-        : rawMessageId || undefined;
+      if (response.status === 202) {
+        const messageId = response.headers.get('X-Message-Id') || undefined;
+        return {
+          success: true,
+          messageId,
+        };
+      }
 
+      const errorText = await response.text();
+      console.error('[SendGrid] Send failed:', response.status, errorText);
       return {
-        success: true,
-        messageId,
+        success: false,
+        error: `SendGrid API error: ${response.status} - ${errorText}`,
       };
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'Unknown SendGrid error';
-      const details =
-        error instanceof Error && error.cause
-          ? JSON.stringify(error.cause)
-          : '';
-      console.error('[SendGrid] Send failed:', message, details, error);
+      console.error('[SendGrid] Send failed:', message);
       return {
         success: false,
         error: message,
