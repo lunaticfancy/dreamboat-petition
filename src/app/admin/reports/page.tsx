@@ -343,7 +343,7 @@ export default function AdminReportsPage() {
                                 {hidingPetitionId === report.petition.id
                                   ? '처리 중...'
                                   : report.petition.isHidden
-                                    ? '소통함 보이기'
+                                    ? '소통함에서 보이기'
                                     : '소통함에서 숨기기'}
                               </Button>
                             </div>
