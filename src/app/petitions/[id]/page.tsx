@@ -69,7 +69,6 @@ export default function PetitionDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [agreed, setAgreed] = useState(false);
-  const [threshold, setThreshold] = useState(10);
   const [answerContent, setAnswerContent] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [editingAnswerId, setEditingAnswerId] = useState<string | null>(null);
@@ -109,18 +108,6 @@ export default function PetitionDetailPage() {
       }
     }
 
-    async function fetchThreshold() {
-      try {
-        const res = await fetch('/api/settings/threshold');
-        const data = await res.json();
-        if (data.threshold) {
-          setThreshold(data.threshold);
-        }
-      } catch {
-        // Use default threshold
-      }
-    }
-
     async function fetchComments() {
       try {
         const res = await fetch(`/api/petitions/${params.id}/comments`);
@@ -136,7 +123,6 @@ export default function PetitionDetailPage() {
     if (params.id) {
       fetchPetition();
       fetchAnswers();
-      fetchThreshold();
       fetchComments();
     }
   }, [params.id]);
@@ -405,10 +391,10 @@ export default function PetitionDetailPage() {
   }
 
   const progressPercentage = Math.min(
-    (petition.agreedCount / threshold) * 100,
+    (petition.agreedCount / (petition.threshold || 10)) * 100,
     100
   );
-  const isThresholdReached = petition.agreedCount >= threshold;
+  const isThresholdReached = petition.agreedCount >= (petition.threshold || 10);
 
   return (
     <div className="min-h-screen bg-background px-4 py-8">
@@ -508,7 +494,7 @@ export default function PetitionDetailPage() {
                     {petition.agreedCount}
                   </span>
                   <span className="text-lg text-muted-foreground">
-                    / {threshold}명
+                    / {petition.threshold || 10}명
                   </span>
                 </div>
               </div>
@@ -541,7 +527,7 @@ export default function PetitionDetailPage() {
                     <span className="text-sm text-muted-foreground">
                       목표까지{' '}
                       <span className="font-semibold text-foreground">
-                        {threshold - petition.agreedCount}
+                        {(petition.threshold || 10) - petition.agreedCount}
                       </span>
                       명 더 필요
                     </span>

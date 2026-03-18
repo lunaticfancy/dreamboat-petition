@@ -85,13 +85,7 @@ export async function POST(
       }
     }
 
-    const thresholdSetting = await prisma.setting.findUnique({
-      where: { key: 'threshold' },
-    });
-
-    const threshold = thresholdSetting
-      ? parseInt(thresholdSetting.value, 10)
-      : 10;
+    const threshold = petition.threshold || 10;
 
     const newAgreedCount = petition.agreedCount + 1;
     const thresholdReached = newAgreedCount >= threshold;
