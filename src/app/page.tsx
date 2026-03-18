@@ -211,6 +211,33 @@ export default async function Home() {
               </p>
             </div>
           </div>
+
+          <div className="bg-primary/10 border border-primary/20 rounded-xl p-6 flex flex-col sm:flex-row items-start gap-4 mt-6">
+            <div className="size-10 flex-shrink-0 flex items-center justify-center bg-primary/20 rounded-lg">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-primary"
+              >
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-bold text-primary mb-1">투명한 소통</h3>
+              <p className="text-sm text-muted-foreground">
+                소통하고 싶은 이야기, 편하게 말씀하세요.
+                <br />
+                열린 마음으로 기다리고 있어요.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
