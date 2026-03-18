@@ -28,7 +28,7 @@ export function createVerificationEmail(data: VerificationTemplateData): {
     process.env.SENDGRID_FROM_NAME ||
     '드림보트 어린이집';
 
-  const subject = `[${senderName}] 이메일 인증 코드`;
+  const subject = `[드림보트 소통함] 이메일 인증코드`;
 
   const text = `
 인증 코드: ${code}
