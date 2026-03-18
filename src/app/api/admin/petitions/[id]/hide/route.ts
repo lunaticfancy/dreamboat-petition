@@ -12,10 +12,10 @@ export async function POST(
 
     if (
       !session ||
-      !['ADMIN', 'DIRECTOR'].includes((session.user as any).role)
+      !['ADMIN', 'DIRECTOR', 'TEACHER'].includes((session.user as any).role)
     ) {
       return NextResponse.json(
-        { error: '관리자 또는 원장만 접근할 수 있습니다.' },
+        { error: '관리자, 원장 또는 선생님만 접근할 수 있습니다.' },
         { status: 403 }
       );
     }
@@ -60,10 +60,10 @@ export async function DELETE(
 
     if (
       !session ||
-      !['ADMIN', 'DIRECTOR'].includes((session.user as any).role)
+      !['ADMIN', 'DIRECTOR', 'TEACHER'].includes((session.user as any).role)
     ) {
       return NextResponse.json(
-        { error: '관리자 또는 원장만 접근할 수 있습니다.' },
+        { error: '관리자, 원장 또는 선생님만 접근할 수 있습니다.' },
         { status: 403 }
       );
     }

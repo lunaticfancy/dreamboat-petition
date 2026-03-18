@@ -12,9 +12,12 @@ export async function POST(
 
     if (
       !session ||
-      !['ADMIN', 'DIRECTOR'].includes((session.user as any)?.role)
+      !['ADMIN', 'DIRECTOR', 'TEACHER'].includes((session.user as any)?.role)
     ) {
-      return NextResponse.json({ error: '권한이 없습니다.' }, { status: 403 });
+      return NextResponse.json(
+        { error: '관리자, 원장 또는 선생님만 접근할 수 있습니다.' },
+        { status: 403 }
+      );
     }
 
     const { id: commentId } = await params;
@@ -54,9 +57,12 @@ export async function DELETE(
 
     if (
       !session ||
-      !['ADMIN', 'DIRECTOR'].includes((session.user as any)?.role)
+      !['ADMIN', 'DIRECTOR', 'TEACHER'].includes((session.user as any)?.role)
     ) {
-      return NextResponse.json({ error: '권한이 없습니다.' }, { status: 403 });
+      return NextResponse.json(
+        { error: '관리자, 원장 또는 선생님만 접근할 수 있습니다.' },
+        { status: 403 }
+      );
     }
 
     const { id: commentId } = await params;
