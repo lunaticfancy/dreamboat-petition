@@ -183,7 +183,7 @@ export default function NotificationSettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <Label htmlFor="notifyNewPetition" className="font-medium">
-                  새로운 소통함 알림
+                  새로운 글 등록 알림
                 </Label>
                 <p className="text-sm text-muted-foreground">
                   새로운 글이 등록되면 알림을 받습니다
