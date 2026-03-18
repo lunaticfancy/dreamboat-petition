@@ -40,7 +40,7 @@ export function createVerificationEmail(data: VerificationTemplateData): {
 좋은 의견, 칭찬, 바라는 점 함께 나눠주세요.
 
 감사합니다.
-${senderName} 팀
+드림보트 소통함 관리자 드림
   `.trim();
 
   const html = `
