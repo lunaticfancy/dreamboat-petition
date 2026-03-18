@@ -70,6 +70,23 @@ export async function POST(req: Request) {
       },
     });
 
+    let petitionTitle = null;
+    if (petitionId) {
+      const petition = await prisma.petition.findUnique({
+        where: { id: petitionId },
+        select: { title: true },
+      });
+      petitionTitle = petition?.title || null;
+    } else if (commentId) {
+      const comment = await prisma.comment.findUnique({
+        where: { id: commentId },
+        include: { petition: { select: { title: true } } },
+      });
+      petitionTitle = comment?.petition.title || null;
+    }
+
+    notifyNewReport(petitionTitle || '신고가 접수되었습니다', report.id);
+
     return NextResponse.json({ report, message: '신고가 접수되었습니다.' });
   } catch (error) {
     console.error('Create report error:', error);
