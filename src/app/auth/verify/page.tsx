@@ -43,7 +43,7 @@ function VerifyContent() {
         return;
       }
 
-      setSuccess('인증 코드가 발송되었습니다. 이메일을 확인해주세요.');
+      setSuccess('인증 메일을 보냈습니다.');
 
       if (data.code) {
         setSuccess(`인증 코드: ${data.code} (개발 모드에서만 표시)`);
