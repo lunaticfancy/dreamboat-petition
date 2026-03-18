@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo, useCallback, Suspense } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 import { StatusBadge } from '@/components/status-badge';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -42,13 +43,16 @@ const statusTabs: { value: string; label: string }[] = [
 
 const ITEMS_PER_PAGE = 10;
 
-export default function PetitionsListPage() {
+function PetitionsListPage() {
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
   const [petitions, setPetitions] = useState<Petition[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState('');
-  const [activeStatus, setActiveStatus] = useState('');
+  const [activeStatus, setActiveStatus] = useState(
+    searchParams.get('status') || ''
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
@@ -81,7 +85,7 @@ export default function PetitionsListPage() {
         const data = await res.json();
 
         if (!res.ok) {
-          setError(data.error || '청원 목록을 불러오는데 실패했습니다.');
+          setError(data.error || '소통함 목록을 불러오는데 실패했습니다.');
           return;
         }
 
@@ -92,7 +96,7 @@ export default function PetitionsListPage() {
         }
         setPagination(data.pagination);
       } catch {
-        setError('청원 목록 조회 중 오류가 발생했습니다.');
+        setError('소통함 목록 조회 중 오류가 발생했습니다.');
       } finally {
         setLoading(false);
         setLoadingMore(false);
@@ -138,9 +142,11 @@ export default function PetitionsListPage() {
     <div className="min-h-screen bg-background">
       <div className="bg-gradient-to-b from-primary/5 to-transparent border-b border-border">
         <div className="max-w-4xl mx-auto px-4 py-12">
-          <h1 className="text-3xl font-bold text-foreground mb-2">청원 목록</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            소통함 목록
+          </h1>
           <p className="text-muted-foreground">
-            학부모와 어린이집 관계자 간 소통을 위한 청원 목록입니다.
+            학부모와 어린이집 관계자 간 소통을 위한 소통함 목록입니다.
           </p>
         </div>
       </div>
@@ -163,7 +169,7 @@ export default function PetitionsListPage() {
             </svg>
             <Input
               type="text"
-              placeholder="청원 제목 또는 내용으로 검색..."
+              placeholder="소통함 제목 또는 내용으로 검색..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10 h-11"
@@ -177,8 +183,8 @@ export default function PetitionsListPage() {
                 onClick={() => setActiveStatus(tab.value)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeStatus === tab.value
-                    ? 'bg-primary text-primary-foreground shadow-sm'
-                    : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
+                    ? 'bg-blue-600 text-white shadow-md ring-2 ring-blue-600 ring-offset-2'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
                 }`}
               >
                 {tab.label}
@@ -188,7 +194,7 @@ export default function PetitionsListPage() {
         </div>
 
         <div className="mb-4 text-sm text-muted-foreground">
-          총 {formatNumber(pagination.total)}개의 청원
+          총 {formatNumber(pagination.total)}개의 소통함
           {petitions.length > 0 && (
             <span className="ml-2">
               ({petitions.length}/{pagination.total}개 표시)
@@ -228,7 +234,7 @@ export default function PetitionsListPage() {
             <p className="text-muted-foreground">
               {searchQuery
                 ? '검색 결과가 없습니다.'
-                : '등록된 청원이 없습니다.'}
+                : '등록된 소통함이 없습니다.'}
             </p>
           </div>
         )}
@@ -294,6 +300,23 @@ export default function PetitionsListPage() {
                       <span className="text-xs text-muted-foreground">
                         명 동의
                       </span>
+                      <div className="flex items-center gap-1.5 text-muted-foreground ml-2">
+                        <svg
+                          className="w-4 h-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                        </svg>
+                        <span className="text-sm font-medium">
+                          {petition._count?.comments || 0}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </Card>
@@ -342,5 +365,21 @@ export default function PetitionsListPage() {
         )}
       </div>
     </div>
+  );
+}
+
+function PetitionsListLoading() {
+  return (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="text-muted-foreground">Loading...</div>
+    </div>
+  );
+}
+
+export default function PetitionsListPageWithSuspense() {
+  return (
+    <Suspense fallback={<PetitionsListLoading />}>
+      <PetitionsListPage />
+    </Suspense>
   );
 }

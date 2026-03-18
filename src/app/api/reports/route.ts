@@ -1,14 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
-import { PrismaLibSql } from '@prisma/adapter-libsql';
-
-const adapter = new PrismaLibSql({
-  url: 'file:./dev.db',
-});
-
-const prisma = new PrismaClient({ adapter });
+import { prisma } from '@/lib/db';
+import { notifyNewReport } from '@/lib/notification';
 
 export async function POST(req: Request) {
   try {
@@ -45,7 +39,7 @@ export async function POST(req: Request) {
 
       if (!petition) {
         return NextResponse.json(
-          { error: '청원을 찾을 수 없습니다.' },
+          { error: '소통함을 찾을 수 없습니다.' },
           { status: 404 }
         );
       }

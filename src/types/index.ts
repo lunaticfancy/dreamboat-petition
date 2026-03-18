@@ -12,8 +12,8 @@ export type PetitionStatus =
   | 'OPEN'
   | 'PENDING_ANSWER'
   | 'ANSWERED'
-  | 'CLOSED'
-  | 'MERGED';
+  | 'MERGED'
+  | 'CLOSED';
 
 export type ReportStatus = 'PENDING' | 'REVIEWED' | 'ACTIONED' | 'DISMISSED';
 
@@ -106,6 +106,8 @@ export interface Comment {
   parentId?: string;
   isStaff: boolean;
   staffRole?: 'TEACHER' | 'DIRECTOR';
+  anonymousId?: string;
+  isHidden?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

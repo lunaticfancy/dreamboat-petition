@@ -1,14 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
-import { PrismaLibSql } from '@prisma/adapter-libsql';
-
-const adapter = new PrismaLibSql({
-  url: 'file:./dev.db',
-});
-
-const prisma = new PrismaClient({ adapter });
+import { prisma } from '@/lib/db';
+import { notifyNewPetition } from '@/lib/notification';
 
 export async function POST(req: Request) {
   try {
@@ -56,11 +50,13 @@ export async function POST(req: Request) {
       },
     });
 
+    notifyNewPetition(title, petition.id);
+
     return NextResponse.json({ petition });
   } catch (error) {
     console.error('Create petition error:', error);
     return NextResponse.json(
-      { error: '청원 생성 중 오류가 발생했습니다.' },
+      { error: '소통함 생성 중 오류가 발생했습니다.' },
       { status: 500 }
     );
   }
@@ -91,7 +87,7 @@ export async function GET(req: Request) {
     const [petitions, total] = await Promise.all([
       prisma.petition.findMany({
         where,
-        orderBy: { agreedCount: 'desc' },
+        orderBy: { createdAt: 'desc' },
         skip,
         take: limit,
         include: {
@@ -116,7 +112,7 @@ export async function GET(req: Request) {
   } catch (error) {
     console.error('Get petitions error:', error);
     return NextResponse.json(
-      { error: '청원 조회 중 오류가 발생했습니다.' },
+      { error: '소통함 조회 중 오류가 발생했습니다.' },
       { status: 500 }
     );
   }

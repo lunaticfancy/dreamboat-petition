@@ -4,31 +4,30 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id                String             @id @default(cuid())
-  email             String             @unique
-  password          String
-  name              String?
-  role              String             @default("PARENT")
-  isVerified        Boolean            @default(false)
-  verifiedAt        DateTime?
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  agreements        Agreement[]
-  answers           Answer[]
-  comments          Comment[]
-  pushSubscriptions PushSubscription[]
-  reports           Report[]
-  adminSettings     Setting[]
-  verificationCodes VerificationCode[]
-  petitions         Petition[]
-  
-  // Notification settings
-  notifyNewPetition        Boolean  @default(true)
-  notifyNewReport          Boolean  @default(true)
-  notifyThresholdReached   Boolean  @default(true)
+  id                     String             @id @default(cuid())
+  email                  String             @unique
+  password               String
+  name                   String?
+  role                   String             @default("PARENT")
+  isVerified             Boolean            @default(false)
+  verifiedAt             DateTime?
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+  notifyNewPetition      Boolean            @default(true)
+  notifyNewReport        Boolean            @default(true)
+  notifyThresholdReached Boolean            @default(true)
+  agreements             Agreement[]
+  answers                Answer[]
+  comments               Comment[]
+  petitions              Petition[]
+  pushSubscriptions      PushSubscription[]
+  reports                Report[]
+  adminSettings          Setting[]
+  verificationCodes      VerificationCode[]
 
   @@index([email])
   @@index([role])
@@ -54,10 +53,10 @@ model Petition {
   answers     Answer[]
   comments    Comment[]
   files       FileUpload[]
+  author      User?        @relation(fields: [authorId], references: [id])
   mergedTo    Petition?    @relation("MergedPetitions", fields: [mergedToId], references: [id])
   mergedFrom  Petition[]   @relation("MergedPetitions")
   reports     Report[]
-  author      User?       @relation(fields: [authorId], references: [id])
 
   @@index([status])
   @@index([agreedCount])
@@ -89,6 +88,8 @@ model Comment {
   parentId   String?
   isStaff    Boolean   @default(false)
   staffRole  String?
+  ipAddress  String?
+  isHidden   Boolean   @default(false)
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   parent     Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
@@ -100,6 +101,7 @@ model Comment {
   @@index([petitionId])
   @@index([parentId])
   @@index([createdAt])
+  @@index([isHidden])
 }
 
 model Answer {

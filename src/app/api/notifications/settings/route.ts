@@ -1,14 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { PrismaClient } from '@prisma/client';
-import { PrismaLibSql } from '@prisma/adapter-libsql';
-
-const adapter = new PrismaLibSql({
-  url: 'file:./dev.db',
-});
-
-const prisma = new PrismaClient({ adapter });
+import { prisma } from '@/lib/db';
 
 export async function GET() {
   try {
