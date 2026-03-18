@@ -17,14 +17,14 @@ export async function POST(
 
     if (!petition) {
       return NextResponse.json(
-        { error: '청원을 찾을 수 없습니다.' },
+        { error: '소통함을 찾을 수 없습니다.' },
         { status: 404 }
       );
     }
 
     if (petition.status !== 'OPEN') {
       return NextResponse.json(
-        { error: '종료된 청원입니다.' },
+        { error: '진행 중인 소통함에만 동의할 수 있습니다.' },
         { status: 400 }
       );
     }
@@ -39,7 +39,7 @@ export async function POST(
 
       if (userRole && ['TEACHER', 'DIRECTOR', 'ADMIN'].includes(userRole)) {
         return NextResponse.json(
-          { error: '선생님, 원장, 관리자는 청원에 동의할 수 없습니다.' },
+          { error: '선생님, 원장, 관리자는 소통함에 동의할 수 없습니다.' },
           { status: 403 }
         );
       }
@@ -145,14 +145,14 @@ export async function DELETE(
 
     if (!petition) {
       return NextResponse.json(
-        { error: '청원을 찾을 수 없습니다.' },
+        { error: '소통함을 찾을 수 없습니다.' },
         { status: 404 }
       );
     }
 
     if (petition.status !== 'OPEN') {
       return NextResponse.json(
-        { error: '종료된 청원입니다.' },
+        { error: '진행 중인 소통함에만 동의할 수 있습니다.' },
         { status: 400 }
       );
     }

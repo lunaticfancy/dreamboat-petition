@@ -2,8 +2,16 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
+
+function getTimeBasedGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 12) return '좋은 아침';
+  if (hour >= 12 && hour < 18) return '즐거운 오후';
+  return '편안한 저녁';
+}
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,13 +25,22 @@ export function Navigation() {
     await signOut({ callbackUrl: '/' });
   };
 
+  const greeting = getTimeBasedGreeting();
+  const userName =
+    session?.user?.name || session?.user?.email?.split('@')[0] || '사용자';
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link href="/" className="flex items-center space-x-2">
-          <span className="text-xl font-bold text-primary">Dreamboat</span>
-          <span className="text-lg text-muted-foreground">X</span>
-          <span className="text-lg text-muted-foreground">Puruni</span>
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/img/logo.png"
+            alt="Puruni Logo"
+            width={120}
+            height={40}
+            className="h-10 w-auto"
+            priority
+          />
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
@@ -39,34 +56,34 @@ export function Navigation() {
             href="/petitions"
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
-            📋 청원 목록
+            📋 소통함 목록
           </Link>
           {canCreatePetition && (
             <Link
               href="/petitions/new"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              ✏️ 청원 작성
+              ✏️ 소통함 작성
             </Link>
           )}
         </nav>
 
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-3">
           {isAuthenticated ? (
             <>
-              <Link
-                href="/settings/profile"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                title="프로필 설정"
-              >
-                ⚙️ 설정
-              </Link>
-              <span className="text-sm text-muted-foreground">
-                {session?.user?.name || session?.user?.email}
+              <span className="text-sm font-medium text-muted-foreground">
+                {greeting}, {userName}님!
               </span>
               <Button variant="ghost" size="sm" onClick={handleLogout}>
                 🚪 로그아웃
               </Button>
+              <Link
+                href="/settings/profile"
+                className="inline-flex items-center justify-center h-7 px-2.5 text-[0.8rem] font-medium rounded-[12px] text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                title="프로필 설정"
+              >
+                ⚙️ 설정
+              </Link>
             </>
           ) : (
             <>
@@ -126,27 +143,32 @@ export function Navigation() {
         <div className="md:hidden border-t border-border bg-background">
           <nav className="container mx-auto px-4 py-4 flex flex-col gap-4">
             {isAuthenticated && (
-              <Link
-                href="/dashboard"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
-                onClick={() => setIsOpen(false)}
-              >
-                🏠 대시보드
-              </Link>
+              <>
+                <span className="text-sm font-medium text-muted-foreground py-2">
+                  {greeting}, {userName}님!
+                </span>
+                <Link
+                  href="/dashboard"
+                  className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  🏠 대시보드
+                </Link>
+              </>
             )}
             <Link
               href="/petitions"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
               onClick={() => setIsOpen(false)}
             >
-              📋 청원 목록
+              📋 소통함 목록
             </Link>
             <Link
               href="/petitions/new"
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
               onClick={() => setIsOpen(false)}
             >
-              ✏️ 청원 작성
+              ✏️ 소통함 작성
             </Link>
             <div className="flex flex-col gap-2 pt-2 border-t border-border">
               {isAuthenticated ? (
@@ -158,16 +180,6 @@ export function Navigation() {
                   >
                     ⚙️ 프로필 설정
                   </Link>
-                  <Link
-                    href="/settings/notifications"
-                    className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    🔔 알림 설정
-                  </Link>
-                  <span className="text-sm text-muted-foreground py-2">
-                    {session?.user?.name || session?.user?.email}
-                  </span>
                   <Button
                     variant="ghost"
                     className="w-full"

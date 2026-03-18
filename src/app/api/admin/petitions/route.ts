@@ -54,7 +54,7 @@ export async function GET(req: Request) {
   } catch (error) {
     console.error('Get petitions error:', error);
     return NextResponse.json(
-      { error: '청원 목록 조회 중 오류가 발생했습니다.' },
+      { error: '소통함 목록 조회 중 오류가 발생했습니다.' },
       { status: 500 }
     );
   }

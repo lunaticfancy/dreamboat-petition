@@ -135,7 +135,7 @@ export default function DashboardPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                전체 청원
+                전체 소통함
               </CardTitle>
               <svg
                 className="h-4 w-4 text-muted-foreground"
@@ -155,7 +155,7 @@ export default function DashboardPage() {
               <div className="text-2xl font-bold">
                 {formatNumber(adminStats?.totalPetitions || 0)}
               </div>
-              <p className="text-xs text-muted-foreground">등록된 청원</p>
+              <p className="text-xs text-muted-foreground">등록된 소통함</p>
             </CardContent>
           </Card>
 
@@ -209,7 +209,9 @@ export default function DashboardPage() {
               <div className="text-2xl font-bold">
                 {formatNumber(adminStats?.answeredPetitions || 0)}
               </div>
-              <p className="text-xs text-muted-foreground">답변 완료된 청원</p>
+              <p className="text-xs text-muted-foreground">
+                답변 완료된 소통함
+              </p>
             </CardContent>
           </Card>
 
@@ -276,10 +278,10 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 50">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-100">
                   <svg
-                    className="w-5 h-5 text-slate-600 dark:text-slate-300"
+                    className="w-5 h-5 text-slate-600"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -293,17 +295,17 @@ export default function DashboardPage() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-slate-700 dark:text-slate-200">
+                  <p className="text-2xl font-bold text-slate-700">
                     {formatNumber(adminStats?.parentCount || 0)}
                   </p>
                   <p className="text-xs text-muted-foreground">학부모</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 50">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-100">
                   <svg
-                    className="w-5 h-5 text-slate-600 dark:text-slate-300"
+                    className="w-5 h-5 text-slate-600"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -317,17 +319,17 @@ export default function DashboardPage() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-slate-700 dark:text-slate-200">
+                  <p className="text-2xl font-bold text-slate-700">
                     {formatNumber(adminStats?.teacherCount || 0)}
                   </p>
                   <p className="text-xs text-muted-foreground">선생님</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 50">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-100">
                   <svg
-                    className="w-5 h-5 text-slate-600 dark:text-slate-300"
+                    className="w-5 h-5 text-slate-600"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -342,17 +344,17 @@ export default function DashboardPage() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-slate-700 dark:text-slate-200">
+                  <p className="text-2xl font-bold text-slate-700">
                     {formatNumber(adminStats?.directorCount || 0)}
                   </p>
                   <p className="text-xs text-muted-foreground">원장</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700">
+              <div className="flex items-center gap-3 p-3 rounded-lg bg-slate-50 50">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-100">
                   <svg
-                    className="w-5 h-5 text-slate-600 dark:text-slate-300"
+                    className="w-5 h-5 text-slate-600"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -365,7 +367,7 @@ export default function DashboardPage() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-slate-700 dark:text-slate-200">
+                  <p className="text-2xl font-bold text-slate-700">
                     {formatNumber(adminStats?.adminCount || 0)}
                   </p>
                   <p className="text-xs text-muted-foreground">관리자</p>
@@ -378,7 +380,7 @@ export default function DashboardPage() {
         <div className="grid gap-6 lg:grid-cols-2 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>최근 청원</CardTitle>
+              <CardTitle>최근 소통함</CardTitle>
               <Link
                 href="/admin/petitions"
                 className="text-sm text-primary hover:underline"
@@ -389,7 +391,7 @@ export default function DashboardPage() {
             <CardContent>
               {recentPetitions.length === 0 ? (
                 <p className="text-muted-foreground text-sm">
-                  최근 청원이 없습니다.
+                  최근 소통함이 없습니다.
                 </p>
               ) : (
                 <div className="space-y-4">
@@ -548,9 +550,9 @@ export default function DashboardPage() {
                   </svg>
                 </div>
                 <div>
-                  <p className="font-medium">청원 관리</p>
+                  <p className="font-medium">소통함 관리</p>
                   <p className="text-sm text-muted-foreground">
-                    청원 목록 및 답변
+                    소통함 목록 및 답변
                   </p>
                 </div>
               </Link>
@@ -691,9 +693,9 @@ function ParentDashboard() {
                 </svg>
               </div>
               <div>
-                <p className="font-medium">새 청원 작성</p>
+                <p className="font-medium">새 소통함 작성</p>
                 <p className="text-sm text-muted-foreground">
-                  익명으로 청원을 작성합니다
+                  익명으로 소통함을 작성합니다
                 </p>
               </div>
             </Link>
@@ -718,9 +720,9 @@ function ParentDashboard() {
                 </svg>
               </div>
               <div>
-                <p className="font-medium">청원 목록</p>
+                <p className="font-medium">소통함 목록</p>
                 <p className="text-sm text-muted-foreground">
-                  진행 중인 청원을 둘러봅니다
+                  진행 중인 소통함을 둘러봅니다
                 </p>
               </div>
             </Link>
@@ -735,24 +737,20 @@ function ParentDashboard() {
         <CardContent>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 shrink-0">
-                <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                  1
-                </span>
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 30 shrink-0">
+                <span className="text-sm font-medium text-blue-600">1</span>
               </div>
               <div>
-                <p className="font-medium">청원 작성</p>
+                <p className="font-medium">소통함 작성</p>
                 <p className="text-sm text-muted-foreground">
-                  익명으로 청원을 작성합니다. 작성자 정보는 공개되지 않습니다.
+                  익명으로 소통함을 작성합니다. 작성자 정보는 공개되지 않습니다.
                 </p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 shrink-0">
-                <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                  2
-                </span>
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 30 shrink-0">
+                <span className="text-sm font-medium text-blue-600">2</span>
               </div>
               <div>
                 <p className="font-medium">동의 수집</p>
@@ -764,10 +762,8 @@ function ParentDashboard() {
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 shrink-0">
-                <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
-                  3
-                </span>
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 30 shrink-0">
+                <span className="text-sm font-medium text-blue-600">3</span>
               </div>
               <div>
                 <p className="font-medium">답변 확인</p>
@@ -813,9 +809,9 @@ function StaffDashboard({ role }: { role: string }) {
                 </svg>
               </div>
               <div>
-                <p className="font-medium">청원 목록</p>
+                <p className="font-medium">소통함 목록</p>
                 <p className="text-sm text-muted-foreground">
-                  모든 청원을 확인합니다
+                  모든 소통함을 확인합니다
                 </p>
               </div>
             </Link>
@@ -824,9 +820,9 @@ function StaffDashboard({ role }: { role: string }) {
               href="/petitions?status=PENDING_ANSWER"
               className="flex items-center gap-3 p-4 rounded-lg border bg-card hover:bg-muted/50 transition-colors"
             >
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-900/30">
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-orange-100 30">
                 <svg
-                  className="w-5 h-5 text-orange-600 dark:text-orange-400"
+                  className="w-5 h-5 text-orange-600"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="none"
@@ -842,7 +838,7 @@ function StaffDashboard({ role }: { role: string }) {
               <div>
                 <p className="font-medium">답변 대기</p>
                 <p className="text-sm text-muted-foreground">
-                  답변이 필요한 청원
+                  답변이 필요한 소통함
                 </p>
               </div>
             </Link>
@@ -852,9 +848,9 @@ function StaffDashboard({ role }: { role: string }) {
                 href="/admin/reports"
                 className="flex items-center gap-3 p-4 rounded-lg border bg-card hover:bg-muted/50 transition-colors"
               >
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-red-100 30">
                   <svg
-                    className="w-5 h-5 text-red-600 dark:text-red-400"
+                    className="w-5 h-5 text-red-600"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -882,9 +878,9 @@ function StaffDashboard({ role }: { role: string }) {
                 href="/settings/notifications"
                 className="flex items-center gap-3 p-4 rounded-lg border bg-card hover:bg-muted/50 transition-colors"
               >
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 30">
                   <svg
-                    className="w-5 h-5 text-blue-600 dark:text-blue-400"
+                    className="w-5 h-5 text-blue-600"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -911,9 +907,9 @@ function StaffDashboard({ role }: { role: string }) {
                 href="/admin"
                 className="flex items-center gap-3 p-4 rounded-lg border bg-card hover:bg-muted/50 transition-colors"
               >
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30">
+                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-100 30">
                   <svg
-                    className="w-5 h-5 text-purple-600 dark:text-purple-400"
+                    className="w-5 h-5 text-purple-600"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="none"
@@ -947,10 +943,10 @@ function StaffDashboard({ role }: { role: string }) {
         <CardContent>
           <div className="space-y-3">
             <p className="text-sm text-muted-foreground">
-              • 학부모가 작성한 청원에 답변을 작성할 수 있습니다.
+              • 학부모가 작성한 소통함에 답변을 작성할 수 있습니다.
             </p>
             <p className="text-sm text-muted-foreground">
-              • 필요 동의 수 이상의 동의를 받은 청원은 필수로 답변해야 합니다.
+              • 필요 동의 수 이상의 동의를 받은 소통함은 필수로 답변해야 합니다.
             </p>
             <p className="text-sm text-muted-foreground">
               • 답변은 수정할 수 있으며, 수정 이력이 저장됩니다.

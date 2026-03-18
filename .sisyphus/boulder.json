@@ -1,11 +1,11 @@
 {
-  "active_plan": "/home/luna/projects/puruni_web/.sisyphus/plans/anonymous-petition-system.md",
-  "started_at": "2026-03-14T13:54:19.391Z",
+  "active_plan": "/home/luna/projects/puruni_web/.sisyphus/plans/deployment.md",
+  "started_at": "2026-03-18T06:36:29.507Z",
   "session_ids": [
-    "ses_3137eb98dffedWH5Z3jhgqhhWk",
-    "ses_3087ef3d2ffevoAjDk6wNXB9gQ"
+    "ses_30074739cffeHll8KzfgdJyRS1",
+    "ses_30055e748ffeG4T56P2KT0UIoc"
   ],
-  "plan_name": "anonymous-petition-system",
+  "plan_name": "deployment",
   "agent": "atlas",
   "worktree_path": "/home/luna/projects/puruni_web"
 }

@@ -61,7 +61,7 @@ export default async function Home() {
                     <rect width="18" height="18" x="3" y="3" rx="2" />
                     <line x1="9" x2="15" y1="3" y2="21" />
                   </svg>
-                  청원 목록 보기
+                  소통함 목록 보기
                 </Button>
               </Link>
               <Link href="/petitions/new">
@@ -80,7 +80,7 @@ export default async function Home() {
                     <path d="M12 5v14" />
                     <path d="M5 12h14" />
                   </svg>
-                  새 청원 작성
+                  새 소통함 작성
                 </Button>
               </Link>
             </div>
@@ -121,10 +121,10 @@ export default async function Home() {
                 </svg>
               </div>
               <h3 className="font-bold text-lg mb-2 text-foreground">
-                익명으로 청원 작성
+                익명으로 소통함 작성
               </h3>
               <p className="text-muted-foreground text-sm">
-                학부모는 누구나 익명으로 청원을 작성할 수 있습니다
+                학부모는 누구나 익명으로 소통함을 작성할 수 있습니다
               </p>
             </div>
 

@@ -1,20 +1,20 @@
-import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/db";
-import bcrypt from "bcryptjs";
+import { NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+import { prisma } from '@/lib/db';
+import bcrypt from 'bcryptjs';
 
 // Allowed roles for admin creation
-const ALLOWED_ROLES = ["TEACHER", "DIRECTOR"];
+const ALLOWED_ROLES = ['PARENT', 'TEACHER', 'DIRECTOR', 'ADMIN'];
 
 export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     // Check if user is authenticated and is admin
-    if (!session || (session.user as any).role !== "ADMIN") {
+    if (!session || (session.user as any).role !== 'ADMIN') {
       return NextResponse.json(
-        { error: "관리자만 접근할 수 있습니다." },
+        { error: '관리자만 접근할 수 있습니다.' },
         { status: 403 }
       );
     }
@@ -30,15 +30,15 @@ export async function GET(req: Request) {
         updatedAt: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
     });
 
     return NextResponse.json({ users });
   } catch (error) {
-    console.error("Get users error:", error);
+    console.error('Get users error:', error);
     return NextResponse.json(
-      { error: "사용자 조회 중 오류가 발생했습니다." },
+      { error: '사용자 조회 중 오류가 발생했습니다.' },
       { status: 500 }
     );
   }
@@ -47,11 +47,11 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     // Check if user is authenticated and is admin
-    if (!session || (session.user as any).role !== "ADMIN") {
+    if (!session || (session.user as any).role !== 'ADMIN') {
       return NextResponse.json(
-        { error: "관리자만 접근할 수 있습니다." },
+        { error: '관리자만 접근할 수 있습니다.' },
         { status: 403 }
       );
     }
@@ -61,14 +61,14 @@ export async function POST(req: Request) {
     // Validation
     if (!email || !password || !role) {
       return NextResponse.json(
-        { error: "이메일, 비밀번호, 역할을 모두 입력해주세요." },
+        { error: '이메일, 비밀번호, 역할을 모두 입력해주세요.' },
         { status: 400 }
       );
     }
 
     if (!ALLOWED_ROLES.includes(role)) {
       return NextResponse.json(
-        { error: "유효하지 않은 역할입니다." },
+        { error: '유효하지 않은 역할입니다.' },
         { status: 400 }
       );
     }
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: "이미 사용 중인 이메일입니다." },
+        { error: '이미 사용 중인 이메일입니다.' },
         { status: 400 }
       );
     }
@@ -88,7 +88,7 @@ export async function POST(req: Request) {
     // Password validation (min 6 characters)
     if (password.length < 6) {
       return NextResponse.json(
-        { error: "비밀번호는 6자 이상이어야 합니다." },
+        { error: '비밀번호는 6자 이상이어야 합니다.' },
         { status: 400 }
       );
     }
@@ -120,9 +120,9 @@ export async function POST(req: Request) {
       user,
     });
   } catch (error) {
-    console.error("Create user error:", error);
+    console.error('Create user error:', error);
     return NextResponse.json(
-      { error: "사용자 생성 중 오류가 발생했습니다." },
+      { error: '사용자 생성 중 오류가 발생했습니다.' },
       { status: 500 }
     );
   }

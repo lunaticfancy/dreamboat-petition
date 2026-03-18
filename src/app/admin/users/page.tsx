@@ -233,6 +233,7 @@ export default function AdminUsersPage() {
                 onChange={(e) => setRole(e.target.value)}
                 className="w-full rounded-lg border border-input bg-transparent px-2.5 py-1.5 text-sm transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
               >
+                <option value="PARENT">학부모</option>
                 <option value="TEACHER">선생님</option>
                 <option value="DIRECTOR">원장</option>
                 <option value="ADMIN">관리자</option>

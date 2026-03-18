@@ -58,7 +58,10 @@ export async function POST(req: Request) {
     if (!result.success) {
       console.error('Email send failed:', result.error);
       return NextResponse.json(
-        { error: '인증 코드 발송 중 오류가 발생했습니다.' },
+        {
+          error: '인증 코드 발송 중 오류가 발생했습니다.',
+          details: result.error,
+        },
         { status: 500 }
       );
     }

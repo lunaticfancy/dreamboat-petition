@@ -41,6 +41,7 @@ export async function GET(req: Request) {
             id: true,
             content: true,
             petitionId: true,
+            isHidden: true,
           },
         },
       },

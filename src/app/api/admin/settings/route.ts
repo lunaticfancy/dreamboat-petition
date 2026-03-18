@@ -26,7 +26,7 @@ export async function GET(req: Request) {
         data: {
           key: 'threshold',
           value: String(DEFAULT_THRESHOLD),
-          description: '청원 답변을 위한 필요 동의 수',
+          description: '소통함 답변을 위한 필요 동의 수',
         },
       });
     }
@@ -83,7 +83,7 @@ export async function PUT(req: Request) {
       create: {
         key: 'threshold',
         value: String(thresholdNum),
-        description: '청원 동의를 위한 기본 임계값',
+        description: '소통함 동의를 위한 기본 임계값',
         updatedById: adminUserId,
       },
     });

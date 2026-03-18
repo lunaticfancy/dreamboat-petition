@@ -11,7 +11,7 @@ import {
   CardDescription,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 
 interface NotificationSettings {
@@ -162,13 +162,13 @@ export default function NotificationSettingsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <Label htmlFor="notifyNewPetition" className="font-medium">
-                  새로운 청원 알림
+                  새로운 소통함 알림
                 </Label>
                 <p className="text-sm text-muted-foreground">
-                  새로운 청원이 등록되면 알림을 받습니다
+                  새로운 소통함이 등록되면 알림을 받습니다
                 </p>
               </div>
-              <Switch
+              <Checkbox
                 id="notifyNewPetition"
                 checked={settings.notifyNewPetition}
                 onCheckedChange={() => handleToggle('notifyNewPetition')}
@@ -181,10 +181,10 @@ export default function NotificationSettingsPage() {
                   신고 알림
                 </Label>
                 <p className="text-sm text-muted-foreground">
-                  청원이 신고되면 알림을 받습니다
+                  소통함이 신고되면 알림을 받습니다
                 </p>
               </div>
-              <Switch
+              <Checkbox
                 id="notifyNewReport"
                 checked={settings.notifyNewReport}
                 onCheckedChange={() => handleToggle('notifyNewReport')}
@@ -197,10 +197,10 @@ export default function NotificationSettingsPage() {
                   목표 달성 알림
                 </Label>
                 <p className="text-sm text-muted-foreground">
-                  청원이 목표 동의를 달성하면 알림을 받습니다
+                  소통함이 목표 동의를 달성하면 알림을 받습니다
                 </p>
               </div>
-              <Switch
+              <Checkbox
                 id="notifyThresholdReached"
                 checked={settings.notifyThresholdReached}
                 onCheckedChange={() => handleToggle('notifyThresholdReached')}

@@ -28,7 +28,7 @@ export async function POST(
 
     if (!petition) {
       return NextResponse.json(
-        { error: '청원을 찾을 수 없습니다.' },
+        { error: '소통함을 찾을 수 없습니다.' },
         { status: 404 }
       );
     }
@@ -45,7 +45,7 @@ export async function POST(
   } catch (error) {
     console.error('Hide petition error:', error);
     return NextResponse.json(
-      { error: '청원 숨기기 중 오류가 발생했습니다.' },
+      { error: '소통함 숨기기 중 오류가 발생했습니다.' },
       { status: 500 }
     );
   }
@@ -76,7 +76,7 @@ export async function DELETE(
 
     if (!petition) {
       return NextResponse.json(
-        { error: '청원을 찾을 수 없습니다.' },
+        { error: '소통함을 찾을 수 없습니다.' },
         { status: 404 }
       );
     }
@@ -93,7 +93,7 @@ export async function DELETE(
   } catch (error) {
     console.error('Unhide petition error:', error);
     return NextResponse.json(
-      { error: '청원 보이기 중 오류가 발생했습니다.' },
+      { error: '소통함 보이기 중 오류가 발생했습니다.' },
       { status: 500 }
     );
   }

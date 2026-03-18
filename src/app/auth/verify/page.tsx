@@ -87,33 +87,33 @@ function VerifyContent() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark px-4">
+    <div className="min-h-screen flex items-center justify-center bg-background-light px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+          <h1 className="text-2xl font-bold text-slate-900">
             이메일 인증
           </h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-2">
+          <p className="text-slate-600 mt-2">
             회원가입 시 사용한 이메일로 인증 코드를 받으세요
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-600 dark:text-red-400 text-sm">
+              <div className="p-3 bg-red-50 20 border border-red-200 rounded-lg text-red-600 text-sm">
                 {error}
               </div>
             )}
 
             {success && (
-              <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg text-green-600 dark:text-green-400 text-sm">
+              <div className="p-3 bg-green-50 20 border border-green-200 rounded-lg text-green-600 text-sm">
                 {success}
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 이메일
               </label>
               <div className="flex gap-2">
@@ -122,14 +122,14 @@ function VerifyContent() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="flex-1 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="flex-1 px-4 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent"
                   placeholder="email@example.com"
                 />
                 <button
                   type="button"
                   onClick={handleSendCode}
                   disabled={sendingCode || !email}
-                  className="px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg font-medium transition-colors disabled:opacity-50 whitespace-nowrap"
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200:bg-slate-600 text-slate-700 rounded-lg font-medium transition-colors disabled:opacity-50 whitespace-nowrap"
                 >
                   {sendingCode ? "발송 중..." : "코드 받기"}
                 </button>
@@ -137,7 +137,7 @@ function VerifyContent() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 인증 코드
               </label>
               <input
@@ -146,7 +146,7 @@ function VerifyContent() {
                 onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
                 required
                 maxLength={6}
-                className="w-full px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary focus:border-transparent text-center text-2xl tracking-widest"
+                className="w-full px-4 py-2 rounded-lg border border-slate-300 bg-white text-slate-900 focus:ring-2 focus:ring-primary focus:border-transparent text-center text-2xl tracking-widest"
                 placeholder="000000"
               />
             </div>
@@ -161,7 +161,7 @@ function VerifyContent() {
           </form>
 
           <div className="mt-4 text-center">
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-slate-600">
               이미 인증하셨나요?{" "}
               <a
                 href="/auth/login"
@@ -180,8 +180,8 @@ function VerifyContent() {
 export default function VerifyPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark">
-        <div className="text-slate-600 dark:text-slate-400">로딩 중...</div>
+      <div className="min-h-screen flex items-center justify-center bg-background-light">
+        <div className="text-slate-600">로딩 중...</div>
       </div>
     }>
       <VerifyContent />

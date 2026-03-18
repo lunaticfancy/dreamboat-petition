@@ -34,7 +34,6 @@ const statusFilters: { value: string; label: string }[] = [
   { value: 'ALL', label: '전체' },
   { value: 'OPEN', label: '진행 중' },
   { value: 'ANSWERED', label: '답변 완료' },
-  { value: 'CLOSED', label: '종료' },
   { value: 'MERGED', label: '병합됨' },
   { value: 'HIDDEN', label: '숨겨짐' },
 ];
@@ -125,12 +124,12 @@ export default function AdminPetitionsPage() {
 
   const handleMerge = async () => {
     if (!sourcePetition || !targetPetitionId) {
-      setMergeError('대상 청원을 선택해주세요.');
+      setMergeError('대상 소통함을 선택해주세요.');
       return;
     }
 
     if (sourcePetition.id === targetPetitionId) {
-      setMergeError('동일한 청원으로 병합할 수 없습니다.');
+      setMergeError('동일한 소통함으로 병합할 수 없습니다.');
       return;
     }
 
@@ -154,7 +153,7 @@ export default function AdminPetitionsPage() {
         throw new Error(data.error || '병합 실패');
       }
 
-      setMergeSuccess('청원이 성공적으로 병합되었습니다.');
+      setMergeSuccess('소통함이 성공적으로 병합되었습니다.');
       fetchPetitions();
       setTimeout(() => {
         closeMergeModal();
@@ -219,7 +218,7 @@ export default function AdminPetitionsPage() {
 
   return (
     <div className="container mx-auto max-w-6xl p-6">
-      <h1 className="mb-6 text-2xl font-bold">청원 관리</h1>
+      <h1 className="mb-6 text-2xl font-bold">소통함 관리</h1>
 
       <Card className="mb-6">
         <CardHeader>
@@ -236,8 +235,8 @@ export default function AdminPetitionsPage() {
                     onClick={() => setActiveStatus(filter.value)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       activeStatus === filter.value
-                        ? 'bg-primary text-primary-foreground shadow-sm'
-                        : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
+                        ? 'bg-blue-600 text-white shadow-md ring-2 ring-blue-600 ring-offset-2'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
                     }`}
                   >
                     {filter.label}
@@ -266,19 +265,19 @@ export default function AdminPetitionsPage() {
       )}
 
       <div className="mb-4 text-sm text-muted-foreground">
-        총 {formatNumber(petitions.length)}개의 청원
+        총 {formatNumber(petitions.length)}개의 소통함
       </div>
 
       {petitions.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">청원이 없습니다.</p>
+          <p className="text-muted-foreground">소통함이 없습니다.</p>
         </div>
       ) : (
         <div className="space-y-4">
           {petitions.map((petition) => (
             <Card
               key={petition.id}
-              className={`p-5 ${petition.isHidden ? 'border-orange-300 dark:border-orange-700' : ''}`}
+              className={`p-5 ${petition.isHidden ? 'border-orange-300' : ''}`}
             >
               <div className="flex flex-col gap-4">
                 <div className="flex items-start justify-between gap-4">
@@ -286,7 +285,7 @@ export default function AdminPetitionsPage() {
                     <div className="flex items-center gap-2 mb-2">
                       <StatusBadge status={petition.status as PetitionStatus} />
                       {petition.isHidden && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-700 30">
                           숨겨짐
                         </span>
                       )}
@@ -363,31 +362,31 @@ export default function AdminPetitionsPage() {
 
       {mergeModalOpen && sourcePetition && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <Card className="w-full max-w-lg mx-4 bg-white dark:bg-slate-900">
+          <Card className="w-full max-w-lg mx-4 !bg-white !text-slate-900">
             <CardHeader>
-              <CardTitle>청원 병합</CardTitle>
+              <CardTitle>소통함 병합</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
                   <label className="mb-1 block text-sm font-medium">
-                    원본 청원 (병합될 청원)
+                    원본 소통함 (병합될 소통함)
                   </label>
-                  <p className="text-sm text-muted-foreground p-3 bg-slate-100 dark:bg-slate-800 rounded-lg">
+                  <p className="text-sm !text-slate-500 p-3 bg-slate-100 rounded-lg">
                     {sourcePetition.title}
                   </p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    이 청원의 동의, 댓글, 답변이 대상 청원으로 이동합니다.
+                  <p className="mt-1 text-xs !text-slate-500">
+                    이 소통함의 동의, 댓글, 답변이 대상 소통함으로 이동합니다.
                   </p>
                 </div>
 
                 <div>
                   <label className="mb-2 block text-sm font-medium">
-                    대상 청원 (병합될 위치)
+                    대상 소통함 (병합될 위치)
                   </label>
                   <Input
                     type="text"
-                    placeholder="청원 제목으로 검색..."
+                    placeholder="소통함 제목으로 검색..."
                     value={mergeSearchQuery}
                     onChange={(e) => {
                       setMergeSearchQuery(e.target.value);
@@ -414,7 +413,7 @@ export default function AdminPetitionsPage() {
                             setTargetPetitionId(p.id);
                             setMergeSearchQuery(p.title);
                           }}
-                          className={`w-full text-left p-3 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${
+                          className={`w-full text-left p-3 hover:bg-slate-100 transition-colors ${
                             targetPetitionId === p.id ? 'bg-primary/10' : ''
                           }`}
                         >
@@ -422,7 +421,7 @@ export default function AdminPetitionsPage() {
                             <span className="font-medium text-sm">
                               {p.title}
                             </span>
-                            <span className="text-xs text-muted-foreground">
+                            <span className="text-xs !text-slate-500">
                               {p.agreedCount}명 동의
                             </span>
                           </div>
@@ -437,7 +436,7 @@ export default function AdminPetitionsPage() {
                               .includes(mergeSearchQuery.toLowerCase())
                           : true)
                     ).length === 0 && (
-                      <p className="p-3 text-sm text-muted-foreground text-center">
+                      <p className="p-3 text-sm !text-slate-500 text-center">
                         검색 결과가 없습니다.
                       </p>
                     )}
@@ -445,11 +444,11 @@ export default function AdminPetitionsPage() {
                 </div>
 
                 {targetPetitionId && (
-                  <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                    <p className="text-sm font-medium text-blue-700 dark:text-blue-400">
-                      선택된 대상 청원
+                  <div className="p-3 bg-blue-50 rounded-lg">
+                    <p className="text-sm font-medium text-blue-700">
+                      선택된 대상 소통함
                     </p>
-                    <p className="text-sm text-blue-600 dark:text-blue-300 mt-1">
+                    <p className="text-sm text-blue-600 mt-1">
                       {petitions.find((p) => p.id === targetPetitionId)?.title}
                     </p>
                   </div>

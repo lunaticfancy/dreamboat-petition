@@ -76,7 +76,11 @@ export class SendGridProvider implements IEmailProvider {
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'Unknown SendGrid error';
-      console.error('[SendGrid] Send failed:', message);
+      const details =
+        error instanceof Error && error.cause
+          ? JSON.stringify(error.cause)
+          : '';
+      console.error('[SendGrid] Send failed:', message, details, error);
       return {
         success: false,
         error: message,

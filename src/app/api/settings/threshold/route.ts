@@ -14,7 +14,7 @@ export async function GET() {
         data: {
           key: 'threshold',
           value: String(DEFAULT_THRESHOLD),
-          description: '청원 답변을 위한 필요 동의 수',
+          description: '소통함 답변을 위한 필요 동의 수',
         },
       });
     }

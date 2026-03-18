@@ -119,8 +119,8 @@ export default function SettingsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>청원 설정</CardTitle>
-          <CardDescription>청원 관련 기본 설정을 관리합니다</CardDescription>
+          <CardTitle>소통함 설정</CardTitle>
+          <CardDescription>소통함 관련 기본 설정을 관리합니다</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -140,7 +140,7 @@ export default function SettingsPage() {
                 placeholder="10"
               />
               <p className="text-sm text-muted-foreground">
-                이 값 이상 동의를 받으면 청원이 답변 대기 상태로 전환됩니다.
+                이 값 이상 동의를 받으면 소통함이 답변 대기 상태로 전환됩니다.
                 기본값은 10명입니다.
               </p>
             </div>

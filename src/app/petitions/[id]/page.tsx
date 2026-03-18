@@ -1,8 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { StatusBadge } from '@/components/status-badge';
 import { ReportButton } from '@/components/report-button';
 import { CommentSection } from '@/components/comment-section';
@@ -20,6 +21,11 @@ interface Petition {
   isHidden: boolean;
   createdAt: string;
   authorId?: string;
+  mergedToId?: string | null;
+  mergedTo?: {
+    id: string;
+    title: string;
+  } | null;
   _count?: {
     agreements: number;
     comments: number;
@@ -31,6 +37,8 @@ interface Comment {
   id: string;
   content: string;
   createdAt: string;
+  anonymousId: string;
+  isHidden: boolean;
   user: {
     name: string | null;
     role: string;
@@ -53,6 +61,7 @@ interface Answer {
 
 export default function PetitionDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const { data: session } = useSession();
   const [petition, setPetition] = useState<Petition | null>(null);
   const [answers, setAnswers] = useState<Answer[]>([]);
@@ -76,13 +85,13 @@ export default function PetitionDetailPage() {
         const data = await res.json();
 
         if (!res.ok) {
-          setError(data.error || '청원을 찾을 수 없습니다.');
+          setError(data.error || '소통함을 찾을 수 없습니다.');
           return;
         }
 
         setPetition(data.petition);
       } catch {
-        setError('청원 조회 중 오류가 발생했습니다.');
+        setError('소통함 조회 중 오류가 발생했습니다.');
       } finally {
         setLoading(false);
       }
@@ -145,7 +154,7 @@ export default function PetitionDetailPage() {
 
     const role = (session.user as any).role;
     if (['TEACHER', 'DIRECTOR', 'ADMIN'].includes(role)) {
-      alert('선생님, 원장, 관리자는 청원에 동의할 수 없습니다.');
+      alert('선생님, 원장, 관리자는 소통함에 동의할 수 없습니다.');
       return;
     }
 
@@ -290,7 +299,7 @@ export default function PetitionDetailPage() {
 
   const canEditPetition = () => {
     const userId = (session?.user as any)?.id;
-    return petition?.authorId === userId;
+    return petition?.authorId === userId && petition?.status === 'OPEN';
   };
 
   const handleStartEditPetition = () => {
@@ -326,16 +335,43 @@ export default function PetitionDetailPage() {
         setIsEditingPetition(false);
         setEditPetitionTitle('');
         setEditPetitionContent('');
-        alert('청원이 수정되었습니다.');
+        alert('소통함이 수정되었습니다.');
       } else {
         const data = await res.json();
-        alert(data.error || '청원 수정 중 오류가 발생했습니다.');
+        alert(data.error || '소통함 수정 중 오류가 발생했습니다.');
       }
     } catch {
-      alert('청원 수정 중 오류가 발생했습니다.');
+      alert('소통함 수정 중 오류가 발생했습니다.');
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleDeletePetition = async () => {
+    if (!confirm('정말로 이 소통함을 삭제하시겠습니까?')) return;
+
+    setSubmitting(true);
+    try {
+      const res = await fetch(`/api/petitions/${params.id}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        router.push('/petitions');
+      } else {
+        const data = await res.json();
+        alert(data.error || '소통함 삭제 중 오류가 발생했습니다.');
+      }
+    } catch {
+      alert('소통함 삭제 중 오류가 발생했습니다.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const canDeletePetition = () => {
+    const userId = (session?.user as any)?.id;
+    return petition?.authorId === userId && petition?.status === 'OPEN';
   };
 
   const handleCommentAdded = async () => {
@@ -361,7 +397,7 @@ export default function PetitionDetailPage() {
       <div className="min-h-screen bg-background px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <div className="p-4 bg-destructive/10 border border-destructive/20 rounded-lg text-destructive">
-            {error || '청원을 찾을 수 없습니다.'}
+            {error || '소통함을 찾을 수 없습니다.'}
           </div>
         </div>
       </div>
@@ -388,6 +424,14 @@ export default function PetitionDetailPage() {
                 | 'MERGED'
             }
           />
+          {petition.status === 'MERGED' && petition.mergedTo && (
+            <Link
+              href={`/petitions/${petition.mergedTo.id}`}
+              className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-700 hover:bg-purple-200"
+            >
+              → 병합된 소통함 보기
+            </Link>
+          )}
           {petition.isHidden && (
             <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-700">
               숨겨짐
@@ -400,12 +444,35 @@ export default function PetitionDetailPage() {
           ) : null}
         </div>
 
-        <h1 className="text-2xl font-bold mb-4">{petition.title}</h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-2xl font-bold">{petition.title}</h1>
+          {(canEditPetition() || canDeletePetition()) && (
+            <div className="flex gap-2">
+              {canEditPetition() && (
+                <Link href={`/petitions/${petition.id}/edit`}>
+                  <Button variant="outline" size="sm">
+                    수정
+                  </Button>
+                </Link>
+              )}
+              {canDeletePetition() && (
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleDeletePetition}
+                  disabled={submitting}
+                >
+                  삭제
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
 
         {!session && (
           <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
             <p>
-              👋 청원에 동의를 하거나 의견을 남기려면{' '}
+              👋 소통함에 동의를 하거나 의견을 남기려면{' '}
               <a href="/auth/login" className="font-semibold underline">
                 로그인
               </a>{' '}
@@ -491,7 +558,7 @@ export default function PetitionDetailPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-2">
             {isStaff() ? (
-              <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 rounded-md text-sm text-muted-foreground">
+              <div className="px-4 py-2 bg-white rounded-md text-sm text-black border">
                 선생님, 원장, 관리자는 동의할 수 없습니다
               </div>
             ) : (

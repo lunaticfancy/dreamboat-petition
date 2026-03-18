@@ -23,6 +23,7 @@ interface Report {
     id: string;
     content: string;
     petitionId: string;
+    isHidden: boolean;
   } | null;
 }
 
@@ -49,6 +50,7 @@ export default function AdminReportsPage() {
   const [error, setError] = useState('');
   const [activeStatus, setActiveStatus] = useState('ALL');
   const [hidingPetitionId, setHidingPetitionId] = useState<string | null>(null);
+  const [hidingCommentId, setHidingCommentId] = useState<string | null>(null);
 
   const fetchReports = useCallback(async () => {
     try {
@@ -134,6 +136,29 @@ export default function AdminReportsPage() {
     }
   };
 
+  const handleHideComment = async (
+    commentId: string,
+    currentlyHidden: boolean
+  ) => {
+    setHidingCommentId(commentId);
+    try {
+      const res = await fetch(`/api/admin/comments/${commentId}/hide`, {
+        method: currentlyHidden ? 'DELETE' : 'POST',
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || '실패');
+      }
+
+      fetchReports();
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setHidingCommentId(null);
+    }
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('ko-KR', {
       year: 'numeric',
@@ -211,8 +236,8 @@ export default function AdminReportsPage() {
                 onClick={() => setActiveStatus(filter.value)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeStatus === filter.value
-                    ? 'bg-primary text-primary-foreground shadow-sm'
-                    : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
+                    ? 'bg-blue-600 text-white shadow-md ring-2 ring-blue-600 ring-offset-2'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-900'
                 }`}
               >
                 {filter.label}
@@ -287,10 +312,10 @@ export default function AdminReportsPage() {
                           <div className="p-3 bg-muted/50 rounded-lg">
                             <div className="flex items-center justify-between mb-1">
                               <p className="text-xs text-muted-foreground">
-                                신고된 청원
+                                신고된 소통함
                               </p>
                               {report.petition.isHidden && (
-                                <span className="text-xs px-2 py-0.5 rounded bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
+                                <span className="text-xs px-2 py-0.5 rounded bg-orange-100 text-orange-700 30">
                                   숨겨짐
                                 </span>
                               )}
@@ -318,8 +343,8 @@ export default function AdminReportsPage() {
                                 {hidingPetitionId === report.petition.id
                                   ? '처리 중...'
                                   : report.petition.isHidden
-                                    ? '청원 보이기'
-                                    : '청원 숨기기'}
+                                    ? '소통함 보이기'
+                                    : '소통함 숨기기'}
                               </Button>
                             </div>
                           </div>
@@ -327,18 +352,44 @@ export default function AdminReportsPage() {
 
                         {report.comment && (
                           <div className="p-3 bg-muted/50 rounded-lg">
-                            <p className="text-xs text-muted-foreground mb-1">
-                              신고된 댓글
-                            </p>
+                            <div className="flex items-center justify-between mb-1">
+                              <p className="text-xs text-muted-foreground">
+                                신고된 댓글
+                              </p>
+                              {report.comment.isHidden && (
+                                <span className="text-xs px-2 py-0.5 rounded bg-orange-100 text-orange-700 30">
+                                  숨겨짐
+                                </span>
+                              )}
+                            </div>
                             <p className="text-sm">
                               {truncateContent(report.comment.content)}
                             </p>
-                            <Link
-                              href={`/petitions/${report.comment.petitionId}`}
-                              className="text-xs text-primary hover:underline mt-1 inline-block"
-                            >
-                              청원에서 보기 →
-                            </Link>
+                            <div className="flex gap-2 mt-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() =>
+                                  handleHideComment(
+                                    report.comment!.id,
+                                    report.comment!.isHidden
+                                  )
+                                }
+                                disabled={hidingCommentId === report.comment.id}
+                              >
+                                {hidingCommentId === report.comment.id
+                                  ? '처리 중...'
+                                  : report.comment.isHidden
+                                    ? '댓글 보이기'
+                                    : '댓글 숨기기'}
+                              </Button>
+                              <Link
+                                href={`/petitions/${report.comment.petitionId}`}
+                                className="text-xs text-primary hover:underline mt-1 inline-block"
+                              >
+                                소통함에서 보기 →
+                              </Link>
+                            </div>
                           </div>
                         )}
                       </div>

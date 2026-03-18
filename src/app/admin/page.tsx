@@ -129,7 +129,7 @@ export default function AdminDashboardPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              전체 청원
+              전체 소통함
             </CardTitle>
             <svg
               className="h-4 w-4 text-muted-foreground"
@@ -149,7 +149,7 @@ export default function AdminDashboardPage() {
             <div className="text-2xl font-bold">
               {formatNumber(stats?.totalPetitions || 0)}
             </div>
-            <p className="text-xs text-muted-foreground">등록된 청원</p>
+            <p className="text-xs text-muted-foreground">등록된 소통함</p>
           </CardContent>
         </Card>
 
@@ -203,7 +203,7 @@ export default function AdminDashboardPage() {
             <div className="text-2xl font-bold">
               {formatNumber(stats?.answeredPetitions || 0)}
             </div>
-            <p className="text-xs text-muted-foreground">답변 완료된 청원</p>
+            <p className="text-xs text-muted-foreground">답변 완료된 소통함</p>
           </CardContent>
         </Card>
 
@@ -271,10 +271,10 @@ export default function AdminDashboardPage() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-950/20">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30">
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-blue-50 20">
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-100 30">
                 <svg
-                  className="w-5 h-5 text-blue-600 dark:text-blue-400"
+                  className="w-5 h-5 text-blue-600"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="none"
@@ -288,17 +288,17 @@ export default function AdminDashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                <p className="text-2xl font-bold text-blue-600">
                   {formatNumber(stats?.parentCount || 0)}
                 </p>
                 <p className="text-xs text-muted-foreground">학부모</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-green-50 dark:bg-green-950/20">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30">
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-green-50 20">
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-green-100 30">
                 <svg
-                  className="w-5 h-5 text-green-600 dark:text-green-400"
+                  className="w-5 h-5 text-green-600"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="none"
@@ -312,17 +312,17 @@ export default function AdminDashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                <p className="text-2xl font-bold text-green-600">
                   {formatNumber(stats?.teacherCount || 0)}
                 </p>
                 <p className="text-xs text-muted-foreground">선생님</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-purple-50 dark:bg-purple-950/20">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30">
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-purple-50 20">
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-100 30">
                 <svg
-                  className="w-5 h-5 text-purple-600 dark:text-purple-400"
+                  className="w-5 h-5 text-purple-600"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="none"
@@ -337,17 +337,17 @@ export default function AdminDashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                <p className="text-2xl font-bold text-purple-600">
                   {formatNumber(stats?.directorCount || 0)}
                 </p>
                 <p className="text-xs text-muted-foreground">원장</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-950/20">
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-900/30">
+            <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 20">
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 30">
                 <svg
-                  className="w-5 h-5 text-gray-600 dark:text-gray-400"
+                  className="w-5 h-5 text-gray-600"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="none"
@@ -360,7 +360,7 @@ export default function AdminDashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-600 dark:text-gray-400">
+                <p className="text-2xl font-bold text-gray-600">
                   {formatNumber(stats?.adminCount || 0)}
                 </p>
                 <p className="text-xs text-muted-foreground">관리자</p>
@@ -373,7 +373,7 @@ export default function AdminDashboardPage() {
       <div className="grid gap-6 lg:grid-cols-2 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>최근 청원</CardTitle>
+            <CardTitle>최근 소통함</CardTitle>
             <Link
               href="/admin/petitions"
               className="text-sm text-primary hover:underline"
@@ -384,7 +384,7 @@ export default function AdminDashboardPage() {
           <CardContent>
             {recentPetitions.length === 0 ? (
               <p className="text-muted-foreground text-sm">
-                최근 청원이 없습니다.
+                최근 소통함이 없습니다.
               </p>
             ) : (
               <div className="space-y-4">
@@ -493,7 +493,7 @@ export default function AdminDashboardPage() {
           <CardTitle>빠른 작업</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Link
               href="/admin/users"
               className="flex items-center gap-3 p-4 rounded-lg border bg-card hover:bg-muted/50 transition-colors"
@@ -543,9 +543,9 @@ export default function AdminDashboardPage() {
                 </svg>
               </div>
               <div>
-                <p className="font-medium">청원 관리</p>
+                <p className="font-medium">소통함 관리</p>
                 <p className="text-sm text-muted-foreground">
-                  청원 목록 및 답변
+                  소통함 목록 및 답변
                 </p>
               </div>
             </Link>
@@ -576,6 +576,58 @@ export default function AdminDashboardPage() {
                     ? `${stats.pendingReports}건`
                     : '신고 처리'}
                 </p>
+              </div>
+            </Link>
+
+            <Link
+              href="/admin/settings"
+              className="flex items-center gap-3 p-4 rounded-lg border bg-card hover:bg-muted/50 transition-colors"
+            >
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10">
+                <svg
+                  className="w-5 h-5 text-primary"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-medium">설정</p>
+                <p className="text-sm text-muted-foreground">
+                  필요 동의 수 설정
+                </p>
+              </div>
+            </Link>
+
+            <Link
+              href="/settings/notifications"
+              className="flex items-center gap-3 p-4 rounded-lg border bg-card hover:bg-muted/50 transition-colors"
+            >
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-yellow-100">
+                <svg
+                  className="w-5 h-5 text-yellow-600"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-medium">알림 설정</p>
+                <p className="text-sm text-muted-foreground">웹 알림 설정</p>
               </div>
             </Link>
           </div>
