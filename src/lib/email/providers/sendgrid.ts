@@ -17,7 +17,7 @@ export class SendGridProvider implements IEmailProvider {
   private initialize(): void {
     if (this.apiKey) return;
 
-    const key = process.env.SENDGRID_API_KEY;
+    const key = (process.env.SENDGRID_API_KEY || '').trim();
     if (!key) {
       throw new Error('SENDGRID_API_KEY is not configured');
     }
@@ -34,7 +34,8 @@ export class SendGridProvider implements IEmailProvider {
       this.initialize();
 
       // Get from email - MUST be configured, no unsafe fallback
-      const fromEmail = process.env.SENDGRID_FROM_EMAIL;
+      // Trim to remove any trailing newlines/whitespace from env vars
+      const fromEmail = (process.env.SENDGRID_FROM_EMAIL || '').trim();
       if (!fromEmail) {
         console.error('[SendGrid] FATAL: SENDGRID_FROM_EMAIL is not set!');
         return {
@@ -43,7 +44,7 @@ export class SendGridProvider implements IEmailProvider {
         };
       }
 
-      const fromName = process.env.SENDGRID_FROM_NAME || '푸르니';
+      const fromName = (process.env.SENDGRID_FROM_NAME || '푸르니').trim();
 
       // DEBUG: Log what we're actually using
       console.log('[SendGrid] fromEmail resolved:', fromEmail);
