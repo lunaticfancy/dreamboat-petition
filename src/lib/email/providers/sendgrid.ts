@@ -36,6 +36,7 @@ export class SendGridProvider implements IEmailProvider {
     try {
       this.initialize();
 
+      const apiKey = process.env.SENDGRID_API_KEY;
       const fromEmail =
         process.env.SENDGRID_FROM_EMAIL ||
         process.env.SMTP_FROM ||
@@ -44,6 +45,13 @@ export class SendGridProvider implements IEmailProvider {
         process.env.SENDGRID_FROM_NAME ||
         process.env.SMTP_FROM_NAME ||
         '푸르니';
+
+      console.log('[SendGrid] Sending email:', {
+        to: payload.to,
+        from: fromEmail,
+        subject: payload.subject,
+        hasApiKey: !!apiKey,
+      });
 
       const [response] = await sgMail.send({
         to: payload.to,
