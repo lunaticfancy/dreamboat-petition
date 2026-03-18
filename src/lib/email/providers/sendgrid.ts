@@ -19,6 +19,9 @@ export class SendGridProvider implements IEmailProvider {
     if (this.initialized) return;
 
     const apiKey = process.env.SENDGRID_API_KEY;
+    console.log('[SendGrid] API Key length:', apiKey?.length);
+    console.log('[SendGrid] API Key first 10 chars:', apiKey?.substring(0, 10));
+
     if (!apiKey) {
       throw new Error('SENDGRID_API_KEY is not configured');
     }
