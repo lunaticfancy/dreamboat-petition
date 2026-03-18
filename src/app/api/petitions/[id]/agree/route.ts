@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/db';
+import { notifyThresholdReached } from '@/lib/notification';
 import crypto from 'crypto';
 
 export async function POST(
@@ -115,6 +116,10 @@ export async function POST(
         },
       }),
     ]);
+
+    if (thresholdReached) {
+      notifyThresholdReached(petition.title, petitionId);
+    }
 
     return NextResponse.json({
       success: true,

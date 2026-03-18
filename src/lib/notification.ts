@@ -1,6 +1,18 @@
 import { prisma } from '@/lib/db';
 import webpush from 'web-push';
 
+// Configure VAPID keys for web-push
+const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_KEY;
+const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY;
+
+if (vapidPublicKey && vapidPrivateKey) {
+  webpush.setVapidDetails(
+    `mailto:${process.env.SENDGRID_FROM_EMAIL || 'noreply@puruni.com'}`,
+    vapidPublicKey,
+    vapidPrivateKey
+  );
+}
+
 interface NotificationType {
   notifyNewPetition: boolean;
   notifyNewReport: boolean;
